@@ -1,0 +1,54 @@
+{
+  "name": "krikoo-capacitor",
+  "version": "0.0.8",
+  "description": "Set of capacitor plugins.",
+  "main": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rimraf dist",
+    "open:android": "open -a /Applications/Android\\ Studio.app android",
+    "open:ios": "open ios/Plugin.xcworkspace",
+    "pack": "npm run build && npm pack",
+    "pod:install": "cd ios && pod install && cd ..",
+    "pod:update": "cd ios && pod update && cd ..",
+    "watch": "tsc --watch"
+  },
+  "author": "Branko Fuenzalida Lorca",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/core": "latest"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "typescript": "^3.2.4",
+    "@capacitor/ios": "^2.0.1",
+    "@capacitor/android": "^2.0.1"
+  },
+  "files": [
+    "dist/",
+    "ios/",
+    "android/",
+    "KrikooCapacitor.podspec"
+  ],
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native"
+  ],
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "no"
+  },
+  "bugs": {
+    "url": "no/issues"
+  }
+}
