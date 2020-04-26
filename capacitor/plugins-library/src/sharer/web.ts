@@ -1,5 +1,10 @@
 import {WebPlugin} from '@capacitor/core';
-import {SharerPlugin} from './definitions';
+import {registerWebPlugin} from '@capacitor/core';
+
+import {SharerPlugin} from '../definitions';
+
+import {ShareOptions} from './models/ShareOptions';
+import {ShareOptionFile} from './models/ShareOptionFile';
 
 export class SharerWeb extends WebPlugin implements SharerPlugin {
     constructor() {
@@ -18,11 +23,5 @@ export class SharerWeb extends WebPlugin implements SharerPlugin {
 }
 
 const Sharer = new SharerWeb();
-
 export {Sharer};
-
-import {registerWebPlugin} from '@capacitor/core';
-import {ShareOptions} from './ShareOptions';
-import {ShareOptionFile} from './ShareOptionFile';
-
 registerWebPlugin(Sharer);

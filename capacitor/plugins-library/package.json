@@ -1,7 +1,9 @@
 {
   "name": "krikoo-capacitor",
-  "version": "0.0.8",
+  "version": "0.0.7",
   "description": "Set of capacitor plugins.",
+  "author": "Branko Fuenzalida Lorca",
+  "license": "MIT",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "scripts": {
@@ -12,10 +14,11 @@
     "pack": "npm run build && npm pack",
     "pod:install": "cd ios && pod install && cd ..",
     "pod:update": "cd ios && pod update && cd ..",
+    "publish:minor": "npm version minor && npm run publish:pkg",
+    "publish:patch": "npm version patch && npm run publish:pkg",
+    "publish:pkg": "npm run build && npm publish",
     "watch": "tsc --watch"
   },
-  "author": "Branko Fuenzalida Lorca",
-  "license": "MIT",
   "dependencies": {
     "@capacitor/core": "latest"
   },
@@ -34,7 +37,12 @@
   "keywords": [
     "capacitor",
     "plugin",
-    "native"
+    "native",
+    "ionic",
+    "share",
+    "eamil",
+    "files",
+    "storage"
   ],
   "capacitor": {
     "ios": {
@@ -46,7 +54,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "no"
+    "url": "https://github.com/krikoo-team/hybrid.git"
   },
   "bugs": {
     "url": "no/issues"
