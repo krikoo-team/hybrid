@@ -1,5 +1,4 @@
-import {WebPlugin} from '@capacitor/core';
-import {registerWebPlugin} from '@capacitor/core';
+import {Plugins, registerWebPlugin, WebPlugin} from '@capacitor/core';
 
 import {SharerPlugin} from '../definitions';
 
@@ -14,14 +13,20 @@ export class SharerWeb extends WebPlugin implements SharerPlugin {
         });
     }
 
-    async share(options: ShareOptions): Promise<{ value: string }> {
+    async share(options: ShareOptions): Promise<{ status: any }> {
         options.files.forEach((shareOptionFile: ShareOptionFile) => {
             console.log('SHARE', shareOptionFile.directory, shareOptionFile.displayableName, shareOptionFile.path);
         });
-        return {value: 'result here...'};
+        return {status: 'status here...'};
     }
 }
 
-const Sharer = new SharerWeb();
+class SharerNative implements SharerPlugin {
+    public share(options: ShareOptions): Promise<{ status: any }> {
+        return Plugins.Sharer.share(options);
+    }
+}
+
+const Sharer = new SharerNative();
 export {Sharer};
-registerWebPlugin(Sharer);
+registerWebPlugin(new SharerWeb());
