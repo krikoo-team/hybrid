@@ -9,12 +9,12 @@ import {DataBaseOptions} from './data-storage/models/DataBaseOptions';
 declare module "@capacitor/core" {
     interface PluginRegistry {
         Sharer: SharerPlugin;
-        DataStorageStorage: DataStoragePlugin;
+        DataStorage: DataStoragePlugin;
     }
 }
 
 export interface SharerPlugin {
-    share(options: ShareOptions): Promise<{ value: string }>;
+    share(options: ShareOptions): Promise<{ status: any }>;
 }
 
 export interface DataStoragePlugin {
