@@ -101,9 +101,7 @@ public class Sharer: CAPPlugin, MFMailComposeViewControllerDelegate, UINavigatio
         if let mailError = error {
             handleError(result, mailError)
         }else{
-            handleSuccess([
-                "status": result
-            ])
+            handleSuccess(["status": result])
         }
     }
     

@@ -4,7 +4,6 @@ public class SharerError {
     public static let ClearTempDir = "CLEAR_TEMP_DIR_ERROR"
     public static let CopyFileToTemp = "COPY_TO_TEMP"
     public static let DoAction = "DO_ACTION_ERROR"
-    public static let EmailParamsNotFound = "EMAIL_PARAMS_NOT_FOUND_ERROR"
     public static let EmptyData = "EMPTY_DATA_ERROR"
     public static let EmptyFilePath = "EMPTY_FILE_PATH_ERROR"
     public static let InvalidPath = "INVALID_PATH_ERROR"
