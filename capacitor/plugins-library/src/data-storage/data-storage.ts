@@ -1,4 +1,4 @@
-import {registerWebPlugin, WebPlugin} from '@capacitor/core';
+import {Plugins, registerWebPlugin, WebPlugin} from '@capacitor/core';
 
 import {DataStoragePlugin} from '../definitions';
 
@@ -9,7 +9,6 @@ import {RetrieveOptions} from './models/RetrieveOptions';
 import {StoreOptions} from './models/StoreOptions';
 
 export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
-
     constructor() {
         super({
             name: 'DataStorage',
@@ -46,9 +45,34 @@ export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
         console.log('DataStorageWeb -> store:', options);
         return {};
     }
-
 }
 
-const DataStorage = new DataStorageWeb();
+class DataStorageNative implements DataStoragePlugin {
+    database(options: DataBaseOptions): Promise<{}> {
+        return Plugins.DataStorage.database(options);
+    }
+
+    delete(options: DeleteOptions): Promise<{}> {
+        return Plugins.DataStorage.delete(options);
+    }
+
+    drop(options: DropOptions): Promise<{}> {
+        return Plugins.DataStorage.drop(options);
+    }
+
+    remove(): Promise<{}> {
+        return Plugins.DataStorage.remove();
+    }
+
+    retrieve(options: RetrieveOptions): Promise<{ value: any }> {
+        return Plugins.DataStorage.retrieve(options);
+    }
+
+    store(options: StoreOptions): Promise<{}> {
+        return Plugins.DataStorage.store(options);
+    }
+}
+
+const DataStorage = new DataStorageNative();
 export {DataStorage};
-registerWebPlugin(DataStorage);
+registerWebPlugin(new DataStorageWeb());
