@@ -1,7 +1,7 @@
-import {ShareEmailApp} from './ShareEmailApp';
+import {ShareEmailAppEnum} from './ShareEmailApp';
 
 export interface ShareOptionEmail {
-    app?: ShareEmailApp;
+    app?: ShareEmailAppEnum;
     /**
      * Set an email list for email type apps
      */
