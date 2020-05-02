@@ -27,9 +27,9 @@ class SqliteDB {
         var createTableStatement: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, createTableString, -1, &createTableStatement, nil) == SQLITE_OK{
             if sqlite3_step(createTableStatement) == SQLITE_DONE{
-                print("DATA STORAGE -> \(dbPath)/\(tableName): table created.")
+                print("DATA STORAGE -> \(dbPath)/\(tableName): Successfully created table.")
             } else {
-                print("DATA STORAGE -> \(dbPath)/\(tableName): table could not be created.")
+                print("DATA STORAGE -> \(dbPath)/\(tableName): Table could not be created.")
                 errorMessage = DataStorageError.CreateTable
             }
         } else {
@@ -100,14 +100,14 @@ class SqliteDB {
             sqlite3_bind_text(insertStatement, 2, (value as NSString).utf8String, -1, nil)
             
             if sqlite3_step(insertStatement) == SQLITE_DONE {
-                print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): Successfully inserted row.")
+                print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): Successfully inserted or replaced row.")
             } else {
                 let errmsg = String(cString: sqlite3_errmsg(db)!)
                 print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): Error preparing insert: \(errmsg)")
                 errorMessage = DataStorageError.InsetOrReplace
             }
         } else {
-            print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): INSERT statement could not be prepared.")
+            print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): INSERT OR REPLACE statement could not be prepared.")
             errorMessage = DataStorageError.InsetOrReplaceStatement
         }
         sqlite3_finalize(insertStatement)
@@ -118,7 +118,7 @@ class SqliteDB {
         let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             .appendingPathComponent(dbPath)
         if sqlite3_open(fileURL.path, &db) != SQLITE_OK{
-            print("DATA STORAGE -> \(dbPath): Error opening database")
+            print("DATA STORAGE -> \(dbPath): Error opening database.")
             return DataStorageError.OpenDatabase
         }else{
             print("DATA STORAGE -> \(dbPath): Successfully opened connection to database.")
