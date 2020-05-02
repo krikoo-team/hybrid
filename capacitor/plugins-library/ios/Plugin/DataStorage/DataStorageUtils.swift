@@ -1,7 +1,7 @@
 import Foundation
 import Capacitor
 
-class StorageUtils {
+class DataStorageUtils {
     
     public static func error(_ message: String, _ db: SqliteDB, _ call: CAPPluginCall) {
         db.close()
