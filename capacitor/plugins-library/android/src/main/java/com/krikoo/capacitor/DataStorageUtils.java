@@ -1,8 +1,12 @@
 package com.krikoo.capacitor;
 
+import android.util.Log;
+
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
+
+import org.json.JSONObject;
 
 public class DataStorageUtils {
 
@@ -40,6 +44,15 @@ public class DataStorageUtils {
     }
 
     return value.length() == 0 ? null : value;
+  }
+
+  public static JSObject jsonParse(String text) {
+    try {
+      return new JSObject(text);
+    } catch (Exception e) {
+      Log.i("DATA STORAGE", String.format("Bad JSON: %s", text));
+      return null;
+    }
   }
 
   public static void success(JSObject result, SqliteDB db, PluginCall call) {

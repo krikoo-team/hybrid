@@ -22,6 +22,39 @@ public class DataStorage extends Plugin {
     call.success(new JSObject());
   }
 
+  @PluginMethod()
+  public void retrieve(PluginCall call) {
+    String table = DataStorageUtils.getNoEmptyString("table", call);
+    if (table == null) {
+      call.error(DataStorageError.EmptyTable);
+      return;
+    }
+
+    String key = DataStorageUtils.getNoEmptyString("key", call);
+    if (key == null) {
+      call.error(DataStorageError.EmptyKey);
+      return;
+    }
+
+    SqliteDB db = new SqliteDB(this.dbName, table);
+    String errorMessage = db.open(bridge);
+    if (errorMessage != null) {
+      DataStorageUtils.error(errorMessage, db, call);
+      return;
+    }
+
+    String storedValue = db.selectOne(key);
+    if (storedValue == null) {
+      DataStorageUtils.error(DataStorageError.SelectStatement, db, call);
+    } else {
+      JSObject value = DataStorageUtils.jsonParse(storedValue);
+      if (value == null) {
+        DataStorageUtils.error(DataStorageError.JsonParse, db, call);
+      } else {
+        DataStorageUtils.success(value, db, call);
+      }
+    }
+  }
 
   @PluginMethod()
   public void store(PluginCall call) {

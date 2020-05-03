@@ -2,6 +2,7 @@ package com.krikoo.capacitor;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -62,6 +63,32 @@ public class SqliteDB {
     } catch (Exception e) {
       Log.i("DATA STORAGE", String.format("%s: Error opening database.", this.dbName));
       return DataStorageError.OpenDatabase;
+    }
+  }
+
+  public String selectOne(String key) {
+    Cursor cursor = select(key);
+    if (cursor == null) {
+      return null;
+    } else {
+      cursor.moveToFirst();
+      return cursor.getString(1);
+    }
+  }
+
+  private Cursor select(String key) {
+    String whereStatementString = key != null && key.isEmpty() ? String.format("WHERE key = '%s'", key) : "";
+    String selectStatementString = String.format("SELECT * FROM %s %s;", tableName, whereStatementString);
+    try {
+      return db.rawQuery(selectStatementString, null);
+    } catch (Exception e) {
+      Log.i("DATA STORAGE", String.format("%s/%s: %s statement could not be prepared. %s", dbName, tableName, selectStatementString, e.getMessage()));
+      if (e.getMessage() != null && e.getMessage().contains("no such table")) {
+        String mockStatement = String.format("SELECT \"%s\" as \"key\", \"{value: null}\" as \"value\";", key);
+        return db.rawQuery(mockStatement, null);
+      } else {
+        return null;
+      }
     }
   }
 
