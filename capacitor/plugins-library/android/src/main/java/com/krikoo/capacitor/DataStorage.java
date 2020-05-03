@@ -23,6 +23,35 @@ public class DataStorage extends Plugin {
   }
 
   @PluginMethod()
+  public void delete(PluginCall call) {
+    String table = DataStorageUtils.getNoEmptyString("table", call);
+    if (table == null) {
+      call.error(DataStorageError.EmptyTable);
+      return;
+    }
+
+    String key = DataStorageUtils.getNoEmptyString("key", call);
+    if (key == null) {
+      call.error(DataStorageError.EmptyKey);
+      return;
+    }
+
+    SqliteDB db = new SqliteDB(this.dbName, table);
+    String errorMessage = db.open(bridge);
+    if (errorMessage != null) {
+      DataStorageUtils.error(errorMessage, db, call);
+      return;
+    }
+
+    String deleteErrorMessage = db.deleteRow(key);
+    if (deleteErrorMessage != null) {
+      DataStorageUtils.error(deleteErrorMessage, db, call);
+    } else {
+      DataStorageUtils.success(new JSObject(), db, call);
+    }
+  }
+
+  @PluginMethod()
   public void retrieve(PluginCall call) {
     String table = DataStorageUtils.getNoEmptyString("table", call);
     if (table == null) {

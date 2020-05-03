@@ -38,6 +38,21 @@ public class SqliteDB {
     }
   }
 
+  public String deleteRow(String key) {
+    try {
+      db.delete(tableName, "key = ?", new String[]{key});
+      Log.i("DATA STORAGE", String.format("%s/%s/%s: Successfully deleted row.", this.dbName, this.tableName, key));
+      return null;
+    } catch (Exception e) {
+      Log.i("DATA STORAGE", String.format("%s/%s/%s: DELETE statement could not be prepared. %s", this.dbName, this.tableName, key, e.getMessage()));
+      if (e.getMessage() != null && e.getMessage().contains("no such table")) {
+        return DataStorageError.TableNotFound;
+      } else {
+        return DataStorageError.DeleteStatement;
+      }
+    }
+  }
+
   public String insert(String key, String value) {
     try {
       ContentValues contentValues = new ContentValues();
@@ -70,6 +85,8 @@ public class SqliteDB {
     Cursor cursor = select(key);
     if (cursor == null) {
       return null;
+    } else if (cursor.getCount() == 0) {
+      return "{value: null}";
     } else {
       cursor.moveToFirst();
       return cursor.getString(1);
