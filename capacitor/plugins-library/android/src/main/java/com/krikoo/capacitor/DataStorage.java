@@ -52,6 +52,29 @@ public class DataStorage extends Plugin {
   }
 
   @PluginMethod()
+  public void drop(PluginCall call) {
+    String table = DataStorageUtils.getNoEmptyString("table", call);
+    if (table == null) {
+      call.error(DataStorageError.EmptyTable);
+      return;
+    }
+
+    SqliteDB db = new SqliteDB(this.dbName, table);
+    String errorMessage = db.open(bridge);
+    if (errorMessage != null) {
+      DataStorageUtils.error(errorMessage, db, call);
+      return;
+    }
+
+    String dropErrorMessage = db.dropTable();
+    if (dropErrorMessage != null) {
+      DataStorageUtils.error(dropErrorMessage, db, call);
+    } else {
+      DataStorageUtils.success(new JSObject(), db, call);
+    }
+  }
+
+  @PluginMethod()
   public void retrieve(PluginCall call) {
     String table = DataStorageUtils.getNoEmptyString("table", call);
     if (table == null) {

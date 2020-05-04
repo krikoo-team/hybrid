@@ -48,7 +48,23 @@ public class SqliteDB {
       if (e.getMessage() != null && e.getMessage().contains("no such table")) {
         return DataStorageError.TableNotFound;
       } else {
-        return DataStorageError.DeleteStatement;
+        return DataStorageError.Delete;
+      }
+    }
+  }
+
+  public String dropTable() {
+    String dropTableString = String.format("DROP TABLE %s;", tableName);
+    try {
+      db.execSQL(dropTableString);
+      Log.i("DATA STORAGE", String.format("%s/%s: Successfully dropped table.", this.dbName, this.tableName));
+      return null;
+    } catch (Exception e) {
+      Log.i("DATA STORAGE", String.format("%s/%s: DROP TABLE statement could not be prepared. %s", this.dbName, this.tableName, e.getMessage()));
+      if (e.getMessage() != null && e.getMessage().contains("no such table")) {
+        return DataStorageError.TableNotFound;
+      } else {
+        return DataStorageError.DropTable;
       }
     }
   }
@@ -64,7 +80,7 @@ public class SqliteDB {
     } catch (Exception e) {
       Log.i("DATA STORAGE", String.format("%s/%s/%s: INSERT OR REPLACE statement could not be prepared.", this.dbName, this.tableName, key));
       Log.e("DATA STORAGE", e.getMessage() == null ? "Undefined" : e.getMessage());
-      return DataStorageError.InsetOrReplaceStatement;
+      return DataStorageError.InsetOrReplace;
     }
   }
 
