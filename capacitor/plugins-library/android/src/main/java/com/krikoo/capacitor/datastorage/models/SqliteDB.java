@@ -1,4 +1,4 @@
-package com.krikoo.capacitor;
+package com.krikoo.capacitor.datastorage.models;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,7 +16,7 @@ public class SqliteDB {
   private String dbName;
   private String tableName;
 
-  SqliteDB(String dbName, String tableName) {
+  public SqliteDB(String dbName, String tableName) {
     this.dbName = dbName;
     this.tableName = tableName;
   }
@@ -107,6 +107,24 @@ public class SqliteDB {
       cursor.moveToFirst();
       return cursor.getString(1);
     }
+  }
+
+  public String removeDatabase(Bridge bridge) {
+    try {
+      Context c = bridge.getContext();
+      File file = new File(c.getFilesDir(), this.dbName);
+      if (!file.exists()) {
+        return DataStorageError.DatabaseNotFound;
+      } else {
+        file.delete();
+        Log.i("DATA STORAGE", String.format("%s: Successfully deleted database.", this.dbName));
+        return null;
+      }
+    } catch (Exception e) {
+      Log.i("DATA STORAGE", String.format("%s: Database does not exist.", this.dbName));
+      return DataStorageError.RemoveDatabase;
+    }
+
   }
 
   private Cursor select(String key) {

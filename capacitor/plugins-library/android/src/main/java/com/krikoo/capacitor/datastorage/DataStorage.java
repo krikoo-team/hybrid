@@ -1,10 +1,13 @@
-package com.krikoo.capacitor;
+package com.krikoo.capacitor.datastorage;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
+
+import com.krikoo.capacitor.datastorage.models.DataStorageError;
+import com.krikoo.capacitor.datastorage.models.SqliteDB;
 
 @NativePlugin()
 public class DataStorage extends Plugin {
@@ -71,6 +74,17 @@ public class DataStorage extends Plugin {
       DataStorageUtils.error(dropErrorMessage, db, call);
     } else {
       DataStorageUtils.success(new JSObject(), db, call);
+    }
+  }
+
+  @PluginMethod()
+  public void remove(PluginCall call) {
+    SqliteDB db = new SqliteDB(this.dbName, "");
+    String errorMessage = db.removeDatabase(bridge);
+    if (errorMessage != null) {
+      call.error(errorMessage);
+    } else {
+      call.success(new JSObject());
     }
   }
 

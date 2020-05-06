@@ -1,4 +1,4 @@
-package com.krikoo.capacitor;
+package com.krikoo.capacitor.sharer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +16,10 @@ import com.getcapacitor.Bridge;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
-import com.krikoo.capacitor.models.ShareEmailApp;
-import com.krikoo.capacitor.models.ShareEmailOptions;
-import com.krikoo.capacitor.models.SharerError;
+
+import com.krikoo.capacitor.sharer.models.ShareEmailApp;
+import com.krikoo.capacitor.sharer.models.ShareEmailOptions;
+import com.krikoo.capacitor.sharer.models.SharerError;
 
 import org.json.JSONException;
 import org.json.JSONObject;

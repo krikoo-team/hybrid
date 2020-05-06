@@ -3,7 +3,7 @@
 
     <application>
         <provider
-            android:name=".SharerUtils"
+            android:name=".sharer.SharerUtils"
             android:authorities="${applicationId}"
             android:exported="false"
             android:grantUriPermissions="true">

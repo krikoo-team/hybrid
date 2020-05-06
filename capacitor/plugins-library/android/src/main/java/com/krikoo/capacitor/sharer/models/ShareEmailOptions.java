@@ -1,4 +1,4 @@
-package com.krikoo.capacitor.models;
+package com.krikoo.capacitor.sharer.models;
 
 import com.getcapacitor.JSObject;
 

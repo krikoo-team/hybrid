@@ -1,4 +1,4 @@
-package com.krikoo.capacitor;
+package com.krikoo.capacitor.sharer;
 
 import android.content.Intent;
 
@@ -6,7 +6,8 @@ import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
-import com.krikoo.capacitor.models.SharerError;
+
+import com.krikoo.capacitor.sharer.models.SharerError;
 
 @NativePlugin()
 public class Sharer extends Plugin {

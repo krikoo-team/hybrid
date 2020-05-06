@@ -1,4 +1,4 @@
-package com.krikoo.capacitor;
+package com.krikoo.capacitor.datastorage;
 
 import android.util.Log;
 
@@ -6,7 +6,7 @@ import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
 
-import org.json.JSONObject;
+import com.krikoo.capacitor.datastorage.models.SqliteDB;
 
 public class DataStorageUtils {
 

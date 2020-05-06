@@ -1,4 +1,4 @@
-package com.krikoo.capacitor;
+package com.krikoo.capacitor.datastorage.models;
 
 public class DataStorageError {
   public static String CloseTable = "CLOSE_TABLE_ERROR";

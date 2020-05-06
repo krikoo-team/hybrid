@@ -1,4 +1,4 @@
-package com.krikoo.capacitor.models;
+package com.krikoo.capacitor.sharer.models;
 
 public class SharerError {
   public static String EmptyData = "EMPTY_DATA_ERROR";
