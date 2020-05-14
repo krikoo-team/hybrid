@@ -1,6 +1,6 @@
 {
   "name": "krikoo-capacitor",
-  "version": "0.0.3",
+  "version": "0.0.4-36",
   "description": "Set of capacitor plugins.",
   "author": "Branko Fuenzalida Lorca",
   "license": "MIT",
@@ -23,10 +23,10 @@
     "@capacitor/core": "latest"
   },
   "devDependencies": {
-    "rimraf": "^3.0.0",
-    "typescript": "^3.2.4",
+    "@capacitor/android": "^2.0.1",
     "@capacitor/ios": "^2.0.1",
-    "@capacitor/android": "^2.0.1"
+    "rimraf": "^3.0.0",
+    "typescript": "^3.2.4"
   },
   "files": [
     "dist/",

@@ -114,6 +114,7 @@ public class SqliteDB {
       Context c = bridge.getContext();
       File file = new File(c.getFilesDir(), this.dbName);
       if (!file.exists()) {
+        Log.i("DATA STORAGE", String.format("%s: Database does not exist.", this.dbName));
         return DataStorageError.DatabaseNotFound;
       } else {
         file.delete();
@@ -121,7 +122,7 @@ public class SqliteDB {
         return null;
       }
     } catch (Exception e) {
-      Log.i("DATA STORAGE", String.format("%s: Database does not exist.", this.dbName));
+      Log.i("DATA STORAGE", String.format("%s: Database can not be deleted. %s.", this.dbName, e.getMessage()));
       return DataStorageError.RemoveDatabase;
     }
 
