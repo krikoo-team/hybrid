@@ -15,9 +15,13 @@ export class SqliteDB {
     }
 
     public close(): void {
-        KrikooUtils.log(this.id + 'DATA STORAGE', 'Closed database.');
-        this.db.close();
-        this.db = null;
+        try {
+            this.db.close();
+            this.db = null;
+            KrikooUtils.log(this.id + 'DATA STORAGE', `${this.dbName}/${this.tableName}: Successfully closed connection to database.`);
+        } catch (error) {
+            KrikooUtils.log(this.id + 'DATA STORAGE', `${this.dbName}/${this.tableName}: Error closing database.`, error);
+        }
     }
 
     public createTable(): Promise<string> {
@@ -36,7 +40,7 @@ export class SqliteDB {
                 const objectStore: IDBObjectStore = transaction.objectStore(this.tableName);
                 return this.processDeleteRow(objectStore.delete(key), key);
             } catch (e) {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: DELETE statement could not be prepared.`, e);
+                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: Could not delete row.`, e);
                 return Promise.resolve(DataStorageError.DeleteStatement);
             }
         }

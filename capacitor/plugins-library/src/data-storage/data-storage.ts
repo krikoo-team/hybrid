@@ -10,6 +10,7 @@ import {StoreOptions} from './models/StoreOptions';
 import {DataStorageError} from './models/DataStorageError';
 import {SqliteDB} from './models/SqliteDB';
 import {KrikooUtils} from '../models/KrikooUtils';
+import {DataStorageUtils} from './data-storage.utils';
 
 export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
 
@@ -27,36 +28,34 @@ export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
 
         const name = options.name;
         if (!name) {
-            return Promise.reject({message: DataStorageError.EmptyDatabaseName});
-        } else {
-            this.dbName = name;
-            return Promise.resolve({});
+            return DataStorageUtils.error(DataStorageError.EmptyDatabaseName);
         }
+        this.dbName = name;
+        return DataStorageUtils.success({});
     }
 
     async delete(options: DeleteOptions): Promise<{}> {
         const table: string = options.table;
         if (!table) {
-            return Promise.reject(DataStorageError.EmptyTable);
+            return DataStorageUtils.error(DataStorageError.EmptyTable);
         }
 
         const key: string = options.key;
         if (!key) {
-            return Promise.reject(DataStorageError.EmptyKey);
+            return DataStorageUtils.error(DataStorageError.EmptyKey);
         }
 
         const db: SqliteDB = new SqliteDB(this.dbName, table);
         const openErrorMessage: string = await db.open();
-        if (openErrorMessage) {
-            return Promise.reject({message: openErrorMessage});
+        if (openErrorMessage !== null) {
+            return DataStorageUtils.error(openErrorMessage);
         }
 
         const deleteErrorMessage: string = await db.deleteRow(key);
-        db.close();
-        if (deleteErrorMessage) {
-            return Promise.reject({message: deleteErrorMessage});
+        if (deleteErrorMessage !== null) {
+            return DataStorageUtils.error(deleteErrorMessage, db);
         } else {
-            return Promise.resolve({});
+            return DataStorageUtils.success({}, db);
         }
     }
 

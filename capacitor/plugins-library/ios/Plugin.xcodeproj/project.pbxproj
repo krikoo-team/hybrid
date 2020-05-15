@@ -176,8 +176,8 @@
 		D667714F24535ECC00FE667A /* DataStorage */ = {
 			isa = PBXGroup;
 			children = (
-				D667715024535ECC00FE667A /* DataStorage.swift */,
 				D667715124535ECC00FE667A /* models */,
+				D667715024535ECC00FE667A /* DataStorage.swift */,
 				D667715424535ECC00FE667A /* DataStorageUtils.swift */,
 			);
 			path = DataStorage;

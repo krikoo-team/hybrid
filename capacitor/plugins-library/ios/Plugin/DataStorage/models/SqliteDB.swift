@@ -15,9 +15,9 @@ class SqliteDB {
     
     public func close(){
         if sqlite3_close(db) != SQLITE_OK{
-            print("DATA STORAGE -> \(dbPath): error closing database")
+            print("DATA STORAGE -> \(dbPath): Error closed database.")
         }else{
-            print("DATA STORAGE -> \(dbPath): Successfully closing connection to database.")
+            print("DATA STORAGE -> \(dbPath): Successfully closed connection to database.")
         }
     }
     

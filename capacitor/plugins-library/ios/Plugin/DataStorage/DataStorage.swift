@@ -4,14 +4,14 @@ import Capacitor
 @objc(DataStorage)
 public class DataStorage: CAPPlugin {
     
-    private var dbPath = "datastorage.sqlite"
+    private var dbName = "datastorage.sqlite"
     
     @objc func database(_ call: CAPPluginCall) {
         guard let name = call.getString("name") else {
             call.error(DataStorageError.EmptyDatabaseName)
             return
         }
-        self.dbPath = "\(name).sqlite"
+        self.dbName = "\(name).sqlite"
         call.success([:])
     }
     
@@ -26,7 +26,7 @@ public class DataStorage: CAPPlugin {
             return
         }
         
-        let db = SqliteDB(dbPath: self.dbPath, tableName: table)
+        let db = SqliteDB(dbPath: self.dbName, tableName: table)
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return
@@ -45,7 +45,7 @@ public class DataStorage: CAPPlugin {
             return
         }
         
-        let db = SqliteDB(dbPath: self.dbPath, tableName: table)
+        let db = SqliteDB(dbPath: self.dbName, tableName: table)
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return
@@ -59,7 +59,7 @@ public class DataStorage: CAPPlugin {
     }
     
     @objc func remove(_ call: CAPPluginCall) {
-        let db = SqliteDB(dbPath: self.dbPath, tableName: "")
+        let db = SqliteDB(dbPath: self.dbName, tableName: "")
         if let errorMessage = db.removeDatabase() {
             DataStorageUtils.error(errorMessage, db, call)
         } else {
@@ -78,7 +78,7 @@ public class DataStorage: CAPPlugin {
             return
         }
         
-        let db = SqliteDB(dbPath: self.dbPath, tableName: table)
+        let db = SqliteDB(dbPath: self.dbName, tableName: table)
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return
@@ -117,7 +117,7 @@ public class DataStorage: CAPPlugin {
             return
         }
         
-        let db = SqliteDB(dbPath: self.dbPath, tableName: table)
+        let db = SqliteDB(dbPath: self.dbName, tableName: table)
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return

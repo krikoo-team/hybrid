@@ -22,7 +22,12 @@ public class SqliteDB {
   }
 
   public void close() {
-    db.close();
+    try {
+      db.close();
+      Log.i("DATA STORAGE", String.format("%s/%s: Successfully closed connection to database.", this.dbName, this.tableName));
+    } catch (Exception e) {
+      Log.i("DATA STORAGE", String.format("%s/%s: Error closing database.", this.dbName, this.tableName));
+    }
   }
 
   public String createTable() {
@@ -44,10 +49,11 @@ public class SqliteDB {
       Log.i("DATA STORAGE", String.format("%s/%s/%s: Successfully deleted row.", this.dbName, this.tableName, key));
       return null;
     } catch (Exception e) {
-      Log.i("DATA STORAGE", String.format("%s/%s/%s: DELETE statement could not be prepared. %s", this.dbName, this.tableName, key, e.getMessage()));
       if (e.getMessage() != null && e.getMessage().contains("no such table")) {
+        Log.i("DATA STORAGE", String.format("%s/%s/%s: DELETE statement could not be prepared. %s", this.dbName, this.tableName, key, e.getMessage()));
         return DataStorageError.TableNotFound;
       } else {
+        Log.i("DATA STORAGE", String.format("%s/%s/%s: Could not delete row. %s", this.dbName, this.tableName, key, e.getMessage()));
         return DataStorageError.Delete;
       }
     }
