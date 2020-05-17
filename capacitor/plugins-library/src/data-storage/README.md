@@ -1,10 +1,11 @@
 # DataStorage
-Key-value data storage. It is developed by using sqlite so it is posible handle table and database too.
+Key-value data storage. It is developed by using sqlite for native platforms and IndexedDB for web, so it is possible handle table and database too.
 
 #### CONTENTS
 [Usage](#usage)  
 [API](#api)  
-[Interfaces](#interfaces)  
+[Interfaces](#interfaces) 
+[Enumerations](#enumerations)  
 
 # Usage
 
@@ -123,3 +124,32 @@ It stores value of a specific key.
 | key | `string` | The key name. |
 | table | `string` | The table name. |
 | value | any | Text, number, boolean or object to store. |
+
+# Enumerations
+
+## DataStorageError
+Returned error messages
+| Name | Description |
+|--|--|
+| CloseTable | Error closing the database. |
+| CreateTable | Error creating a table. |
+| CreateTableStatement | Error with the table creation statement. |
+| DatabaseNotFound | Impossible to proceed with the action because of database does not exist. |
+| Delete | Error deleting key-value of a specific table. |
+| DeleteStatement | Error with the key-value deletion statement. |
+| DropTable | Error dropping an specific table. |
+| DropTableStatement | Error with the table dropping statement. |
+| EmptyDatabaseName | It was not specified the param `name` with the database name. |
+| EmptyKey | It was not specified the param `key` with the key name. |
+| EmptyTable | It was not specified the param `table` with the table name. |
+| EmptyValue | It was not specified the param `value` with a value. |
+| InsertOrReplace | Error inserting or updating an specific value. |
+| InsertOrReplaceStatement | Error with the value inserting or updating  statement. |
+| JsonParse | Impossible convert the object stored as string to json.  |
+| JsonStringify | Impossible convert the json object to store to string. |
+| KeyNotFound | Impossible to proceed with the action because the specified key does not exist. |
+| OpenDatabase | Error opening database. |
+| RemoveDatabase | Error removing database. |
+| Select | Error selecting (retrieving) an specific key-value of a specific table. |
+| SelectStatement | Error with the value retrieving statement. |
+| TableNotFound | Impossible to proceed with the action because the specified table does not exist. |

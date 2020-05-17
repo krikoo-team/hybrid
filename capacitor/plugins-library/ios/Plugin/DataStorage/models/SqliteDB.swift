@@ -116,11 +116,11 @@ class SqliteDB {
             } else {
                 let errmsg = String(cString: sqlite3_errmsg(db)!)
                 print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): Error preparing insert: \(errmsg)")
-                errorMessage = DataStorageError.InsetOrReplace
+                errorMessage = DataStorageError.InsertOrReplace
             }
         } else {
             print("DATA STORAGE -> \(dbPath)/\(tableName)/\(key): INSERT OR REPLACE statement could not be prepared.")
-            errorMessage = DataStorageError.InsetOrReplaceStatement
+            errorMessage = DataStorageError.InsertOrReplaceStatement
         }
         sqlite3_finalize(insertStatement)
         return errorMessage;

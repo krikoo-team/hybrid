@@ -98,7 +98,7 @@ public class SqliteDB {
     } catch (Exception e) {
       Log.i("DATA STORAGE", String.format("%s/%s/%s: INSERT OR REPLACE statement could not be prepared.", this.dbName, this.tableName, key));
       Log.e("DATA STORAGE", e.getMessage() == null ? "Undefined" : e.getMessage());
-      return DataStorageError.InsetOrReplace;
+      return DataStorageError.InsertOrReplace;
     }
   }
 

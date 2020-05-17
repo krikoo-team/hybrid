@@ -68,7 +68,7 @@ export class SqliteDB {
             return Promise.resolve(null);
         } catch (e) {
             KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: INSERT OR REPLACE statement could not be prepared.`, e);
-            return Promise.resolve(DataStorageError.InsetOrReplace);
+            return Promise.resolve(DataStorageError.InsertOrReplace);
         }
     }
 

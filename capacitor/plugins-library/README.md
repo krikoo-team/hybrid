@@ -19,4 +19,3 @@ add(Sharer.class);
 # Plugins
   - [Data Storage](src/data-storage/README.md)
   - [Sharer](src/sharer/README.md)
-

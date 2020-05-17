@@ -13,8 +13,8 @@ public class DataStorageError {
   public static String EmptyKey = "EMPTY_KEY_ERROR";
   public static String EmptyTable = "EMPTY_TABLE_ERROR";
   public static String EmptyValue = "EMPTY_VALUE_ERROR";
-  public static String InsetOrReplace = "INSERT_OR_REPLACE_ERROR";
-  public static String InsetOrReplaceStatement = "INSERT_OR_REPLACE_STATEMENT_ERROR";
+  public static String InsertOrReplace = "INSERT_OR_REPLACE_ERROR";
+  public static String InsertOrReplaceStatement = "INSERT_OR_REPLACE_STATEMENT_ERROR";
   public static String JsonParse = "JSON_PARSE_ERROR";
   public static String JsonStringify = "JSON_STRINGIFY_ERROR";
   public static String KeyNotFound = "KEY_NOT_FOUND_ERROR";
