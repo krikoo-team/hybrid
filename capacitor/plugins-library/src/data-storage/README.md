@@ -4,7 +4,7 @@ Key-value data storage. It is developed by using sqlite for native platforms and
 #### CONTENTS
 [Usage](#usage)  
 [API](#api)  
-[Interfaces](#interfaces) 
+[Interfaces](#interfaces)  
 [Enumerations](#enumerations)  
 
 # Usage
