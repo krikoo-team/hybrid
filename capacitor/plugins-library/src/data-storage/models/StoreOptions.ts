@@ -1,5 +1,5 @@
 export interface StoreOptions {
     key: string;
     table: string;
-    value: string;
+    value: any;
 }

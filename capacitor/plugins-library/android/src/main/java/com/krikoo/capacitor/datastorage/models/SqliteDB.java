@@ -75,6 +75,18 @@ public class SqliteDB {
     }
   }
 
+  public Boolean existDatabase(Bridge bridge) {
+    Context c = bridge.getContext();
+    File file = new File(c.getFilesDir(), this.dbName);
+    Boolean exists = file.exists();
+    if (exists) {
+      Log.i("DATA STORAGE", String.format("%s: Database exists.", this.dbName));
+    } else {
+      Log.i("DATA STORAGE", String.format("%s: Database does not exist.", this.dbName));
+    }
+    return exists;
+  }
+
   public String insert(String key, String value) {
     try {
       ContentValues contentValues = new ContentValues();
@@ -105,10 +117,8 @@ public class SqliteDB {
 
   public String selectOne(String key) {
     Cursor cursor = select(key);
-    if (cursor == null) {
-      return null;
-    } else if (cursor.getCount() == 0) {
-      return "{value: null}";
+    if (cursor.getCount() == 0) {
+      return DataStorageError.KeyNotFound;
     } else {
       cursor.moveToFirst();
       return cursor.getString(1);
@@ -119,14 +129,9 @@ public class SqliteDB {
     try {
       Context c = bridge.getContext();
       File file = new File(c.getFilesDir(), this.dbName);
-      if (!file.exists()) {
-        Log.i("DATA STORAGE", String.format("%s: Database does not exist.", this.dbName));
-        return DataStorageError.DatabaseNotFound;
-      } else {
-        file.delete();
-        Log.i("DATA STORAGE", String.format("%s: Successfully deleted database.", this.dbName));
-        return null;
-      }
+      file.delete();
+      Log.i("DATA STORAGE", String.format("%s: Successfully deleted database.", this.dbName));
+      return null;
     } catch (Exception e) {
       Log.i("DATA STORAGE", String.format("%s: Database can not be deleted. %s.", this.dbName, e.getMessage()));
       return DataStorageError.RemoveDatabase;
@@ -141,12 +146,9 @@ public class SqliteDB {
       return db.rawQuery(selectStatementString, null);
     } catch (Exception e) {
       Log.i("DATA STORAGE", String.format("%s/%s: %s statement could not be prepared. %s", dbName, tableName, selectStatementString, e.getMessage()));
-      if (e.getMessage() != null && e.getMessage().contains("no such table")) {
-        String mockStatement = String.format("SELECT \"%s\" as \"key\", \"{value: null}\" as \"value\";", key);
-        return db.rawQuery(mockStatement, null);
-      } else {
-        return null;
-      }
+      String selectError = e.getMessage() != null && e.getMessage().contains("no such table") ? DataStorageError.TableNotFound : DataStorageError.Select;
+      String mockStatement = String.format("SELECT \"%s\" as \"key\", \"%s\" as \"value\";", key, selectError);
+      return db.rawQuery(mockStatement, null);
     }
   }
 

@@ -17,6 +17,7 @@ public class DataStorageError {
   public static String InsetOrReplaceStatement = "INSERT_OR_REPLACE_STATEMENT_ERROR";
   public static String JsonParse = "JSON_PARSE_ERROR";
   public static String JsonStringify = "JSON_STRINGIFY_ERROR";
+  public static String KeyNotFound = "KEY_NOT_FOUND_ERROR";
   public static String OpenDatabase = "OPEN_DATABASE_ERROR";
   public static String RemoveDatabase = "REMOVE_ERROR";
   public static String Select = "SELECT_ERROR";

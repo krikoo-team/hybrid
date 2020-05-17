@@ -15,6 +15,7 @@ export enum DataStorageError {
     InsetOrReplaceStatement = "INSERT_OR_REPLACE_STATEMENT_ERROR",
     JsonParse = "JSON_PARSE_ERROR",
     JsonStringify = "JSON_STRINGIFY_ERROR",
+    KeyNotFound = "KEY_NOT_FOUND_ERROR",
     OpenDatabase = "OPEN_DATABASE_ERROR",
     RemoveDatabase = "REMOVE_ERROR",
     Select = "SELECT_ERROR",

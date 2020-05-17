@@ -91,6 +91,18 @@ class SqliteDB {
         return errorMessage
     }
     
+    public func existDatabase() -> Bool {
+        let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        .appendingPathComponent(dbPath)
+        let exists = FileManager.default.fileExists(atPath: fileURL.path)
+        if(exists == true){
+            print("DATA STORAGE -> \(dbPath): Database exists.")
+        }else{
+            print("DATA STORAGE -> \(dbPath): Database does not exist.")
+        }
+        return exists
+    }
+    
     public func insert(key:String, value:String) -> String? {
         let insertStatementString = "INSERT OR REPLACE INTO \(tableName) (key, value) VALUES (?, ?);"
         var errorMessage: String? = nil
@@ -129,38 +141,30 @@ class SqliteDB {
     public func removeDatabase() -> String? {
         let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             .appendingPathComponent(dbPath)
-        
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            do {
-                try FileManager.default.removeItem(at: fileURL as URL)
-                print("DATA STORAGE -> \(dbPath): Successfully deleted database.")
-            } catch {
-                print("DATA STORAGE -> \(dbPath): Error deleting database.")
-                return DataStorageError.RemoveDatabase
-            }
-        } else {
-            print("DATA STORAGE -> \(dbPath): Database does not exist.")
-            return DataStorageError.DatabaseNotFound
+        do {
+            try FileManager.default.removeItem(at: fileURL as URL)
+            print("DATA STORAGE -> \(dbPath): Successfully deleted database.")
+            return nil
+        } catch {
+            print("DATA STORAGE -> \(dbPath): Error deleting database.")
+            return DataStorageError.RemoveDatabase
         }
-        return nil
     }
     
     public func selectAll() -> [RetrieveResult]? {
         return select(key: nil)
     }
     
-    public func selectOne(key: String?) -> String? {
-        guard let results = select(key: key) else {
-            return nil
-        }
+    public func selectOne(key: String?) -> String {
+        let results = select(key: key)
         if results.count == 0 {
-            return "{\"value\":null}"
+            return DataStorageError.KeyNotFound
         }else{
             return results[0].value
         }
     }
     
-    private func select(key: String?) -> [RetrieveResult]? {
+    private func select(key: String?) -> [RetrieveResult] {
         let whereStatementString = key != nil && !key!.isEmpty ? "WHERE key = '\(key!)'" : ""
         let selectStatementString: String = "SELECT * FROM \(tableName) \(whereStatementString);"
         var selectStatement: OpaquePointer? = nil
@@ -176,14 +180,8 @@ class SqliteDB {
             let prepareErrorMessage = String(cString: sqlite3_errmsg(db)!)
             
             print("DATA STORAGE -> \(dbPath)/\(tableName): \(selectStatementString) statement could not be prepared. \(prepareErrorMessage)")
-            
-            if prepareErrorMessage.contains("no such table") {
-                let nullValue = "{\"value\":null}"
-                results.append(RetrieveResult(key: "", value: nullValue))
-                return results
-            } else {
-                return nil
-            }
+            let selectError: String = prepareErrorMessage.contains("no such table") ? DataStorageError.TableNotFound : DataStorageError.Select
+            results.append(RetrieveResult(key: "", value: selectError))
         }
         sqlite3_finalize(selectStatement)
         return results

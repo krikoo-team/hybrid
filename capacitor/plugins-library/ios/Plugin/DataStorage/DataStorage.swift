@@ -27,6 +27,12 @@ public class DataStorage: CAPPlugin {
         }
         
         let db = SqliteDB(dbPath: self.dbName, tableName: table)
+        
+        if !db.existDatabase() {
+            call.error(DataStorageError.DatabaseNotFound)
+            return
+        }
+        
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return
@@ -46,6 +52,12 @@ public class DataStorage: CAPPlugin {
         }
         
         let db = SqliteDB(dbPath: self.dbName, tableName: table)
+        
+        if !db.existDatabase() {
+            call.error(DataStorageError.DatabaseNotFound)
+            return
+        }
+        
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return
@@ -60,6 +72,12 @@ public class DataStorage: CAPPlugin {
     
     @objc func remove(_ call: CAPPluginCall) {
         let db = SqliteDB(dbPath: self.dbName, tableName: "")
+        
+        if !db.existDatabase() {
+            call.error(DataStorageError.DatabaseNotFound)
+            return
+        }
+        
         if let errorMessage = db.removeDatabase() {
             DataStorageUtils.error(errorMessage, db, call)
         } else {
@@ -79,21 +97,30 @@ public class DataStorage: CAPPlugin {
         }
         
         let db = SqliteDB(dbPath: self.dbName, tableName: table)
+        
+        if !db.existDatabase() {
+            call.error(DataStorageError.DatabaseNotFound)
+            return
+        }
+        
         if let errorMessage = db.open() {
             DataStorageUtils.error(errorMessage, db, call)
             return
         }
         
-        if let storedValue = db.selectOne(key: key) {
-            print("DATA STORAGE -> result: \(storedValue)")
-            guard let value = DataStorageUtils.jsonParse(storedValue) else {
-                DataStorageUtils.error(DataStorageError.JsonParse, db, call)
-                return
-            }
-            DataStorageUtils.success(value, db, call)
-        }else{
-            DataStorageUtils.error(DataStorageError.SelectStatement, db, call)
+        let storedValue = db.selectOne(key: key)
+        print("DATA STORAGE -> result: \(storedValue)")
+        if !storedValue.starts(with: "{") {
+            DataStorageUtils.error(storedValue, db, call)
+            return
         }
+        
+        guard let value = DataStorageUtils.jsonParse(storedValue) else {
+            DataStorageUtils.error(DataStorageError.JsonParse, db, call)
+            return
+        }
+        DataStorageUtils.success(value, db, call)
+        
     }
     
     @objc func store(_ call: CAPPluginCall) {

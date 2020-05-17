@@ -46,6 +46,12 @@ export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
         }
 
         const db: SqliteDB = new SqliteDB(this.dbName, table);
+
+        const existDatabaseError: string = await db.existsDatabase();
+        if (existDatabaseError !== null) {
+            return DataStorageUtils.error(existDatabaseError);
+        }
+
         const openErrorMessage: string = await db.open();
         if (openErrorMessage !== null) {
             return DataStorageUtils.error(openErrorMessage);
@@ -62,16 +68,21 @@ export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
     async drop(options: DropOptions): Promise<{}> {
         const table: string = options.table;
         if (!table) {
-            return Promise.reject(DataStorageError.EmptyTable);
+            return DataStorageUtils.error(DataStorageError.EmptyTable);
         }
 
         const db: SqliteDB = new SqliteDB(this.dbName, table);
+
+        const existDatabaseError: string = await db.existsDatabase();
+        if (existDatabaseError !== null) {
+            return DataStorageUtils.error(existDatabaseError);
+        }
+
         const dropErrorMessage: string = await db.dropTable();
-        db.close();
         if (dropErrorMessage) {
-            return Promise.reject({message: dropErrorMessage});
+            return DataStorageUtils.error(dropErrorMessage);
         } else {
-            return Promise.resolve({});
+            return DataStorageUtils.success({}, db);
         }
     }
 
@@ -80,72 +91,76 @@ export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
 
         const existDatabaseErrorMessage: string = await db.existsDatabase();
         if (existDatabaseErrorMessage) {
-            return Promise.reject({message: existDatabaseErrorMessage});
+            return DataStorageUtils.error(existDatabaseErrorMessage);
         }
 
         const removeErrorMessage: string = await db.removeDatabase();
         if (removeErrorMessage) {
-            return Promise.reject({message: removeErrorMessage});
+            return DataStorageUtils.error(removeErrorMessage, db);
         } else {
-            return Promise.resolve({});
+            return DataStorageUtils.success({});
         }
     }
 
     async retrieve(options: RetrieveOptions): Promise<{ value: any }> {
         const table: string = options.table;
         if (!table) {
-            return Promise.reject(DataStorageError.EmptyTable);
+            return DataStorageUtils.error(DataStorageError.EmptyTable);
         }
 
         const key: string = options.key;
         if (!key) {
-            return Promise.reject(DataStorageError.EmptyKey);
+            return DataStorageUtils.error(DataStorageError.EmptyKey);
         }
 
         const db: SqliteDB = new SqliteDB(this.dbName, table);
-        const openErrorMessage: string = await db.open();
-        if (openErrorMessage) {
-            return Promise.reject({message: openErrorMessage});
+
+        const existDatabaseError: string = await db.existsDatabase();
+        if (existDatabaseError !== null) {
+            return DataStorageUtils.error(existDatabaseError);
         }
 
-        const result: { value: any } = await db.select(key);
-        db.close();
-        if (result === null) {
-            return Promise.reject({message: DataStorageError.Select});
+        const openErrorMessage: string = await db.open();
+        if (openErrorMessage) {
+            return DataStorageUtils.error(openErrorMessage);
+        }
+
+        const result: { value: any } | string = await db.select(key);
+        if (typeof result === "string") {
+            return DataStorageUtils.error(result, db);
         } else {
-            return Promise.resolve(result);
+            return DataStorageUtils.success(result, db);
         }
     }
 
     async store(options: StoreOptions): Promise<{}> {
         const table: string = options.table;
         if (!table) {
-            return Promise.reject(DataStorageError.EmptyTable);
+            return DataStorageUtils.error(DataStorageError.EmptyTable);
         }
 
         const key: string = options.key;
         if (!key) {
-            return Promise.reject(DataStorageError.EmptyKey);
+            return DataStorageUtils.error(DataStorageError.EmptyKey);
         }
 
         const value: string = options.value;
         if (value === null || value === undefined) {
-            return Promise.reject(DataStorageError.EmptyValue);
+            return DataStorageUtils.error(DataStorageError.EmptyValue);
         }
 
         const db: SqliteDB = new SqliteDB(this.dbName, table);
+
         const createTableMessage: string = await db.createTable();
         if (createTableMessage) {
-            db.close();
-            return Promise.reject({message: createTableMessage});
+            return DataStorageUtils.error(createTableMessage, db);
         }
 
         const insertErrorMessage: string = await db.insert(key, value);
-        db.close();
         if (insertErrorMessage) {
-            return Promise.reject({message: insertErrorMessage});
+            return DataStorageUtils.error(insertErrorMessage, db);
         } else {
-            return Promise.resolve({});
+            return DataStorageUtils.success({}, db);
         }
     }
 

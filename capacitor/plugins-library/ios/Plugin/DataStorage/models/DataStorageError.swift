@@ -15,6 +15,7 @@ class DataStorageError {
     public static let InsetOrReplaceStatement: String = "INSERT_OR_REPLACE_STATEMENT_ERROR"
     public static let JsonParse: String = "JSON_PARSE_ERROR"
     public static let JsonStringify: String = "JSON_STRINGIFY_ERROR"
+    public static let KeyNotFound: String = "KEY_NOT_FOUND_ERROR";
     public static let OpenDatabase: String = "OPEN_DATABASE_ERROR"
     public static let RemoveDatabase: String = "REMOVE_ERROR"
     public static let Select: String = "SELECT_ERROR"

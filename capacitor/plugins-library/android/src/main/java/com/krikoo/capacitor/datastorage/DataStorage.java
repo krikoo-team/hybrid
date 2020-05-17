@@ -40,6 +40,12 @@ public class DataStorage extends Plugin {
     }
 
     SqliteDB db = new SqliteDB(this.dbName, table);
+
+    if (!db.existDatabase(bridge)) {
+      call.error(DataStorageError.DatabaseNotFound);
+      return;
+    }
+
     String errorMessage = db.open(bridge);
     if (errorMessage != null) {
       DataStorageUtils.error(errorMessage, db, call);
@@ -63,6 +69,12 @@ public class DataStorage extends Plugin {
     }
 
     SqliteDB db = new SqliteDB(this.dbName, table);
+
+    if (!db.existDatabase(bridge)) {
+      call.error(DataStorageError.DatabaseNotFound);
+      return;
+    }
+
     String errorMessage = db.open(bridge);
     if (errorMessage != null) {
       DataStorageUtils.error(errorMessage, db, call);
@@ -80,6 +92,12 @@ public class DataStorage extends Plugin {
   @PluginMethod()
   public void remove(PluginCall call) {
     SqliteDB db = new SqliteDB(this.dbName, "");
+
+    if (!db.existDatabase(bridge)) {
+      call.error(DataStorageError.DatabaseNotFound);
+      return;
+    }
+
     String errorMessage = db.removeDatabase(bridge);
     if (errorMessage != null) {
       call.error(errorMessage);
@@ -103,6 +121,12 @@ public class DataStorage extends Plugin {
     }
 
     SqliteDB db = new SqliteDB(this.dbName, table);
+
+    if (!db.existDatabase(bridge)) {
+      call.error(DataStorageError.DatabaseNotFound);
+      return;
+    }
+
     String errorMessage = db.open(bridge);
     if (errorMessage != null) {
       DataStorageUtils.error(errorMessage, db, call);
@@ -110,8 +134,8 @@ public class DataStorage extends Plugin {
     }
 
     String storedValue = db.selectOne(key);
-    if (storedValue == null) {
-      DataStorageUtils.error(DataStorageError.SelectStatement, db, call);
+    if (!storedValue.startsWith("{")) {
+      DataStorageUtils.error(storedValue, db, call);
     } else {
       JSObject value = DataStorageUtils.jsonParse(storedValue);
       if (value == null) {

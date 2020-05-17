@@ -1,5 +1,6 @@
-import {DataStorageError} from './DataStorageError';
 import {KrikooUtils} from '../../models/KrikooUtils';
+
+import {DataStorageError} from './DataStorageError';
 
 export class SqliteDB {
 
@@ -49,7 +50,12 @@ export class SqliteDB {
     public dropTable(): Promise<string> {
         const version: number = new Date().getTime();
         const idbOpenDBRequest: IDBOpenDBRequest = indexedDB.open(this.dbName, version);
-        return this.processOpenForDropTable(idbOpenDBRequest);
+        return this.processDropTableRequest(idbOpenDBRequest);
+    }
+
+    public existsDatabase(): Promise<string> {
+        let idbOpenDBRequest: IDBOpenDBRequest = indexedDB.open(this.dbName);
+        return this.processExistsDatabaseRequest(idbOpenDBRequest);
     }
 
     public insert(key: string, value: any): Promise<string> {
@@ -74,22 +80,17 @@ export class SqliteDB {
     public removeDatabase(): Promise<string> {
         try {
             const idbOpenDBRequest: IDBOpenDBRequest = indexedDB.deleteDatabase(this.dbName);
-            return this.processRemoveDatabase(idbOpenDBRequest);
+            return this.processRemoveDatabaseRequest(idbOpenDBRequest);
         } catch (error) {
             KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: REMOVE DATABASE statement could not be prepared.`, error);
             return Promise.resolve(DataStorageError.RemoveDatabase);
         }
     }
 
-    public existsDatabase(): Promise<string> {
-        let idbOpenDBRequest: IDBOpenDBRequest = indexedDB.open(this.dbName);
-        return this.processOpenForExistsDatabase(idbOpenDBRequest);
-    }
-
-    public select(key: string): Promise<{ value: any }> {
+    public select(key: string): Promise<{ value: any } | string> {
         if (!this.existsTable()) {
             KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: SELECT statement could not be prepared.`,);
-            return Promise.resolve(null);
+            return Promise.resolve(DataStorageError.TableNotFound);
         } else {
             try {
                 const transaction: IDBTransaction = this.db.transaction([this.tableName]);
@@ -98,35 +99,16 @@ export class SqliteDB {
                 return this.processSelect(request, key);
             } catch (error) {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: SELECT statement could not be prepared.`, error);
-                return Promise.resolve(null);
+                return Promise.resolve(DataStorageError.SelectStatement);
             }
         }
     }
 
-    private processSelect(idbRequest: IDBRequest, key: string): Promise<{ value: any }> {
-        return new Promise<{ value: any }>((resolve) => {
-            idbRequest.onsuccess = (event: Event | any) => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: Successfully got key.`);
-                resolve(event.target.result);
-            };
-            idbRequest.onerror = (event: Event | any) => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: Error gotten key.`, event.target);
-                resolve({value: null});
-            }
-        });
-    }
-
-    private existsTable(): boolean {
-        const objectStoreNames: Array<String> = Array.from(this.db.objectStoreNames);
-        const exists: boolean = objectStoreNames.includes(this.tableName);
-        KrikooUtils.log(this.id + 'DATA STORAGE', `${this.dbName}/${this.tableName}: ${exists ? 'Exists.' : 'Does not exist.'}`, objectStoreNames);
-        return exists;
-    }
-
     private async processOpenForCreateTable(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
         return new Promise<string>((resolve: (value: string | PromiseLike<string>) => void) => {
-            idbOpenDBRequest.onsuccess = () => {
+            idbOpenDBRequest.onsuccess = (event: Event | any) => {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully opened connection to database for create.`);
+                this.db = event.target.result;
                 resolve(null);
             };
             idbOpenDBRequest.onerror = (event: Event | any) => {
@@ -140,38 +122,74 @@ export class SqliteDB {
                     if (!this.existsTable()) {
                         const objectStore: IDBObjectStore = this.db.createObjectStore(this.tableName, {keyPath: 'key'});
                         objectStore.createIndex('value', 'value', {unique: false});
-                        const errorMessage: string = await this.processCreateTable(objectStore.transaction);
+                        const errorMessage: string = await this.processCreateTableTransaction(objectStore.transaction);
                         if (errorMessage) {
+                            this.abortTransaction(event);
                             resolve(errorMessage);
                         }
                     }
                 } catch (error) {
                     KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: CREATE TABLE statement could not be prepared.`, error);
+                    this.abortTransaction(event);
                     resolve(DataStorageError.CreateTableStatement);
                 }
             }
         });
     }
 
-    private processOpenForExistsDatabase(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
-        return new Promise<string>((resolve: (value: string | PromiseLike<string>) => void) => {
-            idbOpenDBRequest.onsuccess = (event: Event | any) => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully opened connection to database for check.`);
-                event.target.result.close();
-                resolve(null);
+    private processSelect(idbRequest: IDBRequest, key: string): Promise<{ value: any } | string> {
+        return new Promise<{ value: any } | string>((resolve) => {
+            idbRequest.onsuccess = (event: Event | any) => {
+                const result: any = event.target.result;
+                if (!result) {
+                    KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: SELECT statement could not be prepared.`);
+                    resolve(DataStorageError.KeyNotFound);
+                } else {
+                    KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: Successfully got key.`);
+                    resolve(result);
+                }
             };
-            idbOpenDBRequest.onerror = () => {
-                resolve(DataStorageError.OpenDatabase);
-            };
-            idbOpenDBRequest.onupgradeneeded = async (event: Event | any) => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully upgraded needed connection to database for check.`);
-                event.target.transaction.abort();
-                resolve(DataStorageError.DatabaseNotFound);
+            idbRequest.onerror = (event: Event | any) => {
+                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: Error gotten key.`, event.target);
+                resolve(DataStorageError.Select);
             }
         });
     }
 
-    private processCreateTable(idbTransaction: IDBTransaction): Promise<string> {
+    private abortTransaction(event: any): void {
+        try {
+            event.target.transaction.abort();
+        } catch (error) {
+            KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Error aborting transaction.`, error);
+        }
+        this.db = null;
+    }
+
+    private existsTable(): boolean {
+        const objectStoreNames: Array<String> = Array.from(this.db.objectStoreNames);
+        const exists: boolean = objectStoreNames.includes(this.tableName);
+        KrikooUtils.log(this.id + 'DATA STORAGE', `${this.dbName}/${this.tableName}: ${exists ? 'Exists.' : 'Does not exist.'}`, objectStoreNames);
+        return exists;
+    }
+
+    private processExistsDatabaseRequest(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
+        return new Promise<string>((resolve: (value: string | PromiseLike<string>) => void) => {
+            idbOpenDBRequest.onsuccess = (event: Event | any) => {
+                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Database exists.`);
+                event.target.result.close();
+                resolve(null);
+            };
+            idbOpenDBRequest.onerror = () => {
+                resolve(DataStorageError.DatabaseNotFound);
+            };
+            idbOpenDBRequest.onupgradeneeded = async (event: Event | any) => {
+                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Database does not exist.`);
+                event.target.transaction.abort();
+            }
+        });
+    }
+
+    private processCreateTableTransaction(idbTransaction: IDBTransaction): Promise<string> {
         return new Promise<string>((resolve) => {
             idbTransaction.oncomplete = () => {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Successfully created table.`);
@@ -179,7 +197,7 @@ export class SqliteDB {
             };
             idbTransaction.onerror = (event: Event | any) => {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Table could not be created.`, event.target);
-                resolve(DataStorageError.OpenDatabase);
+                resolve(DataStorageError.CreateTable);
             }
         });
     }
@@ -197,12 +215,9 @@ export class SqliteDB {
         });
     }
 
-    private processOpenForDropTable(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
+    private processDropTableRequest(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
         return new Promise<string>((resolve: (value: string | PromiseLike<string>) => void) => {
-            idbOpenDBRequest.onsuccess = () => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully opened connection to database for drop.`);
-                resolve(null);
-            };
+            idbOpenDBRequest.onsuccess = () => resolve(null);
             idbOpenDBRequest.onerror = (event: Event | any) => {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Error opening database for drop.`, event.target);
                 resolve(DataStorageError.OpenDatabase);
@@ -210,22 +225,19 @@ export class SqliteDB {
             idbOpenDBRequest.onupgradeneeded = async (event: Event | any) => {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully upgraded needed connection to database for drop.`);
                 this.db = event.target.result;
-                try {
-                    if (!this.existsTable()) {
-                        KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: DROP TABLE statement could not be prepared.`,);
-                        resolve(DataStorageError.TableNotFound);
-                    } else {
-                        try {
-                            this.db.deleteObjectStore(this.tableName);
-                            KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Successfully dropped row.`);
-                        } catch (e) {
-                            KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Table could not be dropped.`, e);
-                            resolve(DataStorageError.DropTableStatement);
-                        }
+                if (!this.existsTable()) {
+                    KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: DROP TABLE statement could not be prepared.`);
+                    this.abortTransaction(event);
+                    resolve(DataStorageError.TableNotFound);
+                } else {
+                    try {
+                        this.db.deleteObjectStore(this.tableName);
+                        KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Successfully dropped row.`);
+                    } catch (e) {
+                        this.abortTransaction(event);
+                        KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Table could not be dropped.`, e);
+                        resolve(DataStorageError.DropTableStatement);
                     }
-                } catch (error) {
-                    KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: DROP TABLE statement could not be prepared.`, error);
-                    resolve(DataStorageError.CreateTableStatement);
                 }
             }
         });
@@ -245,7 +257,7 @@ export class SqliteDB {
         });
     }
 
-    private processRemoveDatabase(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
+    private processRemoveDatabaseRequest(idbOpenDBRequest: IDBOpenDBRequest): Promise<string> {
         return new Promise<string>((resolve: (value: string | PromiseLike<string>) => void) => {
             idbOpenDBRequest.onsuccess = (event: Event | any) => {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully deleted database.`);
