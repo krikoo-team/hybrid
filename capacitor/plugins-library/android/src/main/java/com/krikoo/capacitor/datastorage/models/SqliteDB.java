@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.getcapacitor.Bridge;
+import com.getcapacitor.JSObject;
+import com.krikoo.capacitor.datastorage.DataStorageUtils;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -115,6 +119,31 @@ public class SqliteDB {
     }
   }
 
+  public JSObject selectAll() {
+    Cursor cursor = select(null);
+    JSObject keyValues = new JSObject();
+    while (cursor.moveToNext()) {
+      String key = cursor.getString(0);
+      String value = cursor.getString(1);
+
+      if (key.equals(DataStorageUtils.DATA_STORAGE_ERROR_HASH)) {
+        keyValues.put(key, value);
+      } else {
+        JSObject jsObjectValue = DataStorageUtils.jsonParse(value);
+        if (jsObjectValue != null) {
+          try {
+            keyValues.put(key, jsObjectValue.get("value"));
+          } catch (Exception e) {
+            keyValues.put(DataStorageUtils.DATA_STORAGE_ERROR_HASH, DataStorageError.JsonParse);
+          }
+        } else {
+          keyValues.put(DataStorageUtils.DATA_STORAGE_ERROR_HASH, DataStorageError.JsonParse);
+        }
+      }
+    }
+    return keyValues;
+  }
+
   public String selectOne(String key) {
     Cursor cursor = select(key);
     if (cursor.getCount() == 0) {
@@ -147,7 +176,7 @@ public class SqliteDB {
     } catch (Exception e) {
       Log.i("DATA STORAGE", String.format("%s/%s: %s statement could not be prepared. %s", dbName, tableName, selectStatementString, e.getMessage()));
       String selectError = e.getMessage() != null && e.getMessage().contains("no such table") ? DataStorageError.TableNotFound : DataStorageError.Select;
-      String mockStatement = String.format("SELECT \"%s\" as \"key\", \"%s\" as \"value\";", key, selectError);
+      String mockStatement = String.format("SELECT \"%s\" as \"key\", \"%s\" as \"value\";", DataStorageUtils.DATA_STORAGE_ERROR_HASH, selectError);
       return db.rawQuery(mockStatement, null);
     }
   }
