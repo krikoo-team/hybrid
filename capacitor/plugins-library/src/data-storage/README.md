@@ -28,6 +28,10 @@ DataStorage.remove();
 DataStorage.retrieve({key: 'country', table: 'user-data'})
     .then((result: { value: any }) => /* value handler here */);
 
+// It will retrieve all key-values of the 'user-data' table. 
+DataStorage.retrieveAll({table: 'user-data'})
+    .then((result: { [key: string]: any }) => /* value handler here */);
+
 // It will drop (remove) the user-data's table and consequently its key-values.
 DataStorage.drop({table: 'user-data'});
 ```
@@ -42,7 +46,7 @@ It establish the name for the database. By default `datastorage`.
 
 **options** [DataBaseOptions](#interfaces)  
 **return** `Promise<{}>`
-**error** `Promise<{ message: string }>`  
+**error** `Promise<string>`  
 
 ## delete
 ```typescript
@@ -52,7 +56,7 @@ It deletes a key-value from a table.
 
 **options** [DeleteOptions](#interfaces)  
 **return** `Promise<{}>`   
-**error** `Promise<{ message: string }>`  
+**error** `Promise<string>`  
 
 ## drop
 ```typescript
@@ -62,7 +66,7 @@ It drops (remove) a table.
 
 **options** [DropOptions](#interfaces)  
 **return** `Promise<{}>`  
-**error** `Promise<{ message: string }>`  
+**error** `Promise<string>`  
 
 ## remove
 ```typescript
@@ -72,7 +76,7 @@ It removes the entire database.
 
 **options** void  
 **return** `Promise<{}>`  
-**error** `Promise<{ message: string }>`  
+**error** `Promise<string>`  
 
 ## retrieve
 ```typescript
@@ -82,7 +86,17 @@ It retrieves the value of a specific key.
 
 **options** [RetrieveOptions](#interfaces)  
 **return** `Promise<{ value: any }>`  
-**error** `Promise<{ message: string }>`  
+**error** `Promise<string>`  
+
+## retrieveAll
+```typescript
+retrieveAll(options: RetrieveAllOptions): Promise<{ [key: string]: any }>
+```
+It retrieves all key-values of a specific table.
+
+**options** [RetrieveAllOptions](#interfaces)  
+**return** `Promise<{ [key: string]: any }>`  
+**error** `Promise<string>`  
 
 ## store
 ```typescript
@@ -92,7 +106,7 @@ It stores value of a specific key.
 
 **options** [StoreOptions](#interfaces)  
 **return** `Promise<{}>`  
-**error** `Promise<{ message: string }>`  
+**error** `Promise<string>`  
 
 # Interfaces
  
@@ -116,6 +130,11 @@ It stores value of a specific key.
 | Property | Type | Description |
 |--|--|--|
 | key | `string` | The key name. |
+| table | `string` | The table name. |
+
+## RetrieveAllOptions
+| Property | Type | Description |
+|--|--|--|
 | table | `string` | The table name. |
 
 ## StoreOptions
