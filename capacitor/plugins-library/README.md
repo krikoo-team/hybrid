@@ -11,7 +11,7 @@ $ npm i krikoo-capacitor@latest
 ```
 
 ### Android configuration
-Add into `this.init` method of `app -> java -> com.domain.myaplication -> MainActivy` file:
+Add into `this.init` method of `app -> java -> com.domain.myapplication -> MainActivity` file:
 ```
 add(DataStorage.class);
 add(Sharer.class);
