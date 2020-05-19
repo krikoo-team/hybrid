@@ -1,4 +1,19 @@
-##  (2020-05-18)
+##  (2020-05-19)
+
+
+## [0.1.2](https://github.com/krikoo-team/hybrid/compare/0.1.0...0.1.2) (2020-05-19)
+
+### Bug Fixes
+* datastorage(android): Fixed retrieving error in android platform for data storage plugin.
+* datastorage(web): Fixed "non updatable value" error in Web Data Storage plugin by changing "add" by "put" method.
+* datastorage(web): Fixed web error retrieving massive data from data storage.
+* datastorage(web): Exported data storage error enum.
+
+
+### Docs
+
+* docs(PluginsProxy): Updated links of the plugins for absolute ones to github.
+
 
 ## 0.1.0 (2020-05-18)
 
