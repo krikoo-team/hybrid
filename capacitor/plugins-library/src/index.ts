@@ -1,6 +1,7 @@
 export * from './definitions';
 
 export * from './data-storage/models/DataBaseOptions';
+export * from './data-storage/models/DataStorageError';
 export * from './data-storage/models/DeleteOptions';
 export * from './data-storage/models/DropOptions';
 export * from './data-storage/models/RetrieveOptions';
