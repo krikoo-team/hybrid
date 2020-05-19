@@ -140,7 +140,7 @@ public class SqliteDB {
   }
 
   private Cursor select(String key) {
-    String whereStatementString = key != null && key.isEmpty() ? String.format("WHERE key = '%s'", key) : "";
+    String whereStatementString = key != null && !key.isEmpty() ? String.format("WHERE key = '%s'", key) : "";
     String selectStatementString = String.format("SELECT * FROM %s %s;", tableName, whereStatementString);
     try {
       return db.rawQuery(selectStatementString, null);
