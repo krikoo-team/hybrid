@@ -11,5 +11,6 @@ CAP_PLUGIN(DataStorage, "DataStorage",
            CAP_PLUGIN_METHOD(drop, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(remove, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(retrieve, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(retrieveAll, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(store, CAPPluginReturnPromise);
 )

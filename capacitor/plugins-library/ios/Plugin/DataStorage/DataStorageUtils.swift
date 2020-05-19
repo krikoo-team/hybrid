@@ -3,6 +3,8 @@ import Capacitor
 
 class DataStorageUtils {
     
+    public static let DATA_STORAGE_ERROR_HASH = "KRIKOO_ERROR_HASH"
+    
     public static func error(_ message: String, _ db: SqliteDB, _ call: CAPPluginCall) {
         db.close()
         call.reject(message)
@@ -16,12 +18,18 @@ class DataStorageUtils {
     }
     
     public static func getObjectToStore(_ key: String, _ call: CAPPluginCall) -> [String:Any]? {
+        // TODO: Add type to avoid problems with boolean and numbers
+        // TODO: Now transforms 0 to false.
         
-        if let value = call.getString(key, nil) {
+        if let value = call.getBool(key, nil) {
             return ["value": value]
         }
         
-        if let value = call.getInt(key, nil) {
+        if let value = call.getDouble(key, nil) {
+            return ["value": value]
+        }
+        
+        if let value = call.getString(key, nil) {
             return ["value": value]
         }
         
