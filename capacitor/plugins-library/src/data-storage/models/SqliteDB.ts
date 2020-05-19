@@ -63,7 +63,7 @@ export class SqliteDB {
             const idbObjectStore: IDBObjectStore = this.db
                 .transaction(this.tableName, "readwrite")
                 .objectStore(this.tableName);
-            idbObjectStore.add({key, value});
+            idbObjectStore.put({key, value});
             KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: Successfully inserted or replaced row.`);
             return Promise.resolve(null);
         } catch (e) {
