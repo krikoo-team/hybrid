@@ -124,14 +124,14 @@ export class SqliteDB {
                         objectStore.createIndex('value', 'value', {unique: false});
                         const errorMessage: string = await this.processCreateTableTransaction(objectStore.transaction);
                         if (errorMessage) {
-                            this.abortTransaction(event);
                             resolve(errorMessage);
+                            this.abortTransaction(event);
                         }
                     }
                 } catch (error) {
                     KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: CREATE TABLE statement could not be prepared.`, error);
-                    this.abortTransaction(event);
                     resolve(DataStorageError.CreateTableStatement);
+                    this.abortTransaction(event);
                 }
             }
         });
@@ -219,24 +219,24 @@ export class SqliteDB {
         return new Promise<string>((resolve: (value: string | PromiseLike<string>) => void) => {
             idbOpenDBRequest.onsuccess = () => resolve(null);
             idbOpenDBRequest.onerror = (event: Event | any) => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Error opening database for drop.`, event.target);
+                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Error opening database for drop.`, event.target);
                 resolve(DataStorageError.OpenDatabase);
             };
             idbOpenDBRequest.onupgradeneeded = async (event: Event | any) => {
-                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}: Successfully upgraded needed connection to database for drop.`);
+                KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Successfully upgraded needed connection to database for drop.`);
                 this.db = event.target.result;
                 if (!this.existsTable()) {
                     KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: DROP TABLE statement could not be prepared.`);
-                    this.abortTransaction(event);
                     resolve(DataStorageError.TableNotFound);
+                    this.abortTransaction(event);
                 } else {
                     try {
                         this.db.deleteObjectStore(this.tableName);
                         KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Successfully dropped row.`);
                     } catch (e) {
-                        this.abortTransaction(event);
                         KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}: Table could not be dropped.`, e);
                         resolve(DataStorageError.DropTableStatement);
+                        this.abortTransaction(event);
                     }
                 }
             }
