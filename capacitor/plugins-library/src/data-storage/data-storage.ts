@@ -3,14 +3,15 @@ import {Capacitor, Plugins, registerWebPlugin, WebPlugin} from '@capacitor/core'
 import {DataStoragePlugin} from '../definitions';
 
 import {DataBaseOptions} from './models/DataBaseOptions';
+import {DataStorageError} from './models/DataStorageError';
+import {DataStorageUtils} from './data-storage.utils';
 import {DeleteOptions} from './models/DeleteOptions';
 import {DropOptions} from './models/DropOptions';
 import {RetrieveOptions} from './models/RetrieveOptions';
-import {StoreOptions} from './models/StoreOptions';
-import {DataStorageError} from './models/DataStorageError';
-import {SqliteDB} from './models/SqliteDB';
 import {KrikooUtils} from '../models/KrikooUtils';
-import {DataStorageUtils} from './data-storage.utils';
+import {RetrieveAllOptions} from './models/RetrieveAllOptions';
+import {SqliteDB} from './models/SqliteDB';
+import {StoreOptions} from './models/StoreOptions';
 
 export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
 
@@ -125,7 +126,33 @@ export class DataStorageWeb extends WebPlugin implements DataStoragePlugin {
             return DataStorageUtils.error(openErrorMessage);
         }
 
-        const result: { value: any } | string = await db.select(key);
+        const result: { value: any } | string = await db.selectOne(key);
+        if (typeof result === "string") {
+            return DataStorageUtils.error(result, db);
+        } else {
+            return DataStorageUtils.success(result, db);
+        }
+    }
+
+    async retrieveAll(options: RetrieveAllOptions): Promise<{ [key: string]: any }> {
+        const table: string = options.table;
+        if (!table) {
+            return DataStorageUtils.error(DataStorageError.EmptyTable);
+        }
+
+        const db: SqliteDB = new SqliteDB(this.dbName, table);
+
+        const existDatabaseError: string = await db.existsDatabase();
+        if (existDatabaseError !== null) {
+            return DataStorageUtils.error(existDatabaseError);
+        }
+
+        const openErrorMessage: string = await db.open();
+        if (openErrorMessage) {
+            return DataStorageUtils.error(openErrorMessage);
+        }
+
+        const result: { [key: string]: any } | string = await db.selectAll();
         if (typeof result === "string") {
             return DataStorageUtils.error(result, db);
         } else {
@@ -206,6 +233,14 @@ class DataStorageNative implements DataStoragePlugin {
             return this.web.retrieve(options);
         } else {
             return Plugins.DataStorage.retrieve(options);
+        }
+    }
+
+    retrieveAll(options: RetrieveAllOptions): Promise<{ [key: string]: any }> {
+        if (Capacitor.getPlatform() === 'web') {
+            return this.web.retrieveAll(options);
+        } else {
+            return Plugins.DataStorage.retrieveAll(options);
         }
     }
 
