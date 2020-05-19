@@ -1,5 +1,18 @@
 ##  (2020-05-19)
 
+## [0.2.0](https://github.com/krikoo-team/hybrid/compare/0.1.2...0.2.0) (2020-05-19)
+
+
+### Features
+
+* feat(android): Added retrieveAll method to DataStorage plugin.
+* feat(ios): Added retrieveAll method to DataStorage plugin.
+* feat(web): Added retrieveAll method to DataStorage plugin.
+
+### Docs
+
+* docs(DataStorage): Updated readme with retrieveAll new feature.
+
 
 ## [0.1.2](https://github.com/krikoo-team/hybrid/compare/0.1.0...0.1.2) (2020-05-19)
 
