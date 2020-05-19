@@ -10,6 +10,8 @@ import com.krikoo.capacitor.datastorage.models.SqliteDB;
 
 public class DataStorageUtils {
 
+  public static String DATA_STORAGE_ERROR_HASH = "KRIKOO_ERROR_HASH";
+
   public static void error(String message, SqliteDB db, PluginCall call) {
     db.close();
     call.reject(message);
@@ -23,14 +25,19 @@ public class DataStorageUtils {
   public static JSObject getObjectToStore(String key, PluginCall call) {
     JSObject value = new JSObject();
 
-    String textValue = call.getString(key, null);
-    if (textValue != null) {
-      value.put("value", textValue);
+    Boolean booleanValue = call.getBoolean(key, null);
+    if (booleanValue != null) {
+      value.put("value", booleanValue);
     }
 
     Integer intValue = call.getInt(key, null);
     if (intValue != null) {
       value.put("value", intValue);
+    }
+
+    String textValue = call.getString(key, null);
+    if (textValue != null) {
+      value.put("value", textValue);
     }
 
     JSArray arrayValue = call.getArray(key, null);

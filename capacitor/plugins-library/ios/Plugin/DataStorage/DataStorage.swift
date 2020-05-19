@@ -123,7 +123,38 @@ public class DataStorage: CAPPlugin {
         
     }
     
+    @objc func retrieveAll(_ call: CAPPluginCall) {
+        guard let table = call.getString("table") else {
+            call.error(DataStorageError.EmptyTable)
+            return
+        }
+        
+        let db = SqliteDB(dbPath: self.dbName, tableName: table)
+        
+        if !db.existDatabase() {
+            call.error(DataStorageError.DatabaseNotFound)
+            return
+        }
+        
+        if let errorMessage = db.open() {
+            DataStorageUtils.error(errorMessage, db, call)
+            return
+        }
+        
+        let storedKeyValues = db.selectAll()
+        if storedKeyValues.index(forKey: DataStorageUtils.DATA_STORAGE_ERROR_HASH) != nil {
+            let selectAllErrorMessage = storedKeyValues[DataStorageUtils.DATA_STORAGE_ERROR_HASH]
+            DataStorageUtils.error(selectAllErrorMessage as! String, db, call)
+            return
+        }
+    
+        DataStorageUtils.success(storedKeyValues, db, call)
+    }
+    
     @objc func store(_ call: CAPPluginCall) {
+        // TODO: Add type to avoid problems with boolean and numbers
+        // TODO: Now transforms 0 to false.
+        
         guard let table = DataStorageUtils.getNoEmptyString("table", call) else {
             call.error(DataStorageError.EmptyTable)
             return

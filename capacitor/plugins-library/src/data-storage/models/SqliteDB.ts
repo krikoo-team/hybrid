@@ -87,7 +87,24 @@ export class SqliteDB {
         }
     }
 
-    public select(key: string): Promise<{ value: any } | string> {
+    public async selectAll(): Promise<{ [key: string]: any } | string> {
+        const keyValuesArray: Array<{ key: string, value: any } | string> = await this.select();
+        if (typeof keyValuesArray === 'string') {
+            return keyValuesArray;
+        } else {
+            const keyValues: { [key: string]: any } = {};
+            keyValuesArray.forEach((keyValue: { key: string, value: any }) => {
+                keyValues[keyValue.key] = keyValue.value;
+            });
+            return keyValues;
+        }
+    }
+
+    public selectOne(key: string): Promise<{ value: any } | string> {
+        return this.select(key);
+    }
+
+    private select(key?: string): Promise<any | string> {
         if (!this.existsTable()) {
             KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: SELECT statement could not be prepared.`,);
             return Promise.resolve(DataStorageError.TableNotFound);
@@ -95,7 +112,7 @@ export class SqliteDB {
             try {
                 const transaction: IDBTransaction = this.db.transaction([this.tableName]);
                 const objectStore: IDBObjectStore = transaction.objectStore(this.tableName);
-                const request: IDBRequest = objectStore.get(key);
+                const request: IDBRequest = key ? objectStore.get(key) : objectStore.getAll();
                 return this.processSelect(request, key);
             } catch (error) {
                 KrikooUtils.log(this.id + " DATA STORAGE", `${this.dbName}/${this.tableName}/${key}: SELECT statement could not be prepared.`, error);
@@ -137,8 +154,8 @@ export class SqliteDB {
         });
     }
 
-    private processSelect(idbRequest: IDBRequest, key: string): Promise<{ value: any } | string> {
-        return new Promise<{ value: any } | string>((resolve) => {
+    private processSelect(idbRequest: IDBRequest, key: string): Promise<{ value: any } | Array<{ key: string, value: any }> | string> {
+        return new Promise<{ key: string, value: any } | string>((resolve) => {
             idbRequest.onsuccess = (event: Event | any) => {
                 const result: any = event.target.result;
                 if (!result) {

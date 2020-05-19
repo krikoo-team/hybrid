@@ -151,8 +151,24 @@ class SqliteDB {
         }
     }
     
-    public func selectAll() -> [RetrieveResult]? {
-        return select(key: nil)
+    public func selectAll() -> [String:Any] {
+        let retrieveResults = select(key: nil)
+        var keyValues: [String:Any] = [:]
+        for retrieveResult in retrieveResults {
+            let key = retrieveResult.key
+            let value = retrieveResult.value
+            
+            if key == DataStorageUtils.DATA_STORAGE_ERROR_HASH {
+                keyValues[key] = value
+            } else {
+                if let dictionaryValue = DataStorageUtils.jsonParse(value) {
+                    keyValues[key] = dictionaryValue
+                } else {
+                    return [DataStorageUtils.DATA_STORAGE_ERROR_HASH : DataStorageError.JsonParse]
+                }
+            }
+        }
+        return keyValues;
     }
     
     public func selectOne(key: String?) -> String {
@@ -181,7 +197,7 @@ class SqliteDB {
             
             print("DATA STORAGE -> \(dbPath)/\(tableName): \(selectStatementString) statement could not be prepared. \(prepareErrorMessage)")
             let selectError: String = prepareErrorMessage.contains("no such table") ? DataStorageError.TableNotFound : DataStorageError.Select
-            results.append(RetrieveResult(key: "", value: selectError))
+            results.append(RetrieveResult(key: DataStorageUtils.DATA_STORAGE_ERROR_HASH, value: selectError))
         }
         sqlite3_finalize(selectStatement)
         return results

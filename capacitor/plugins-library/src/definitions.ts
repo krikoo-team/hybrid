@@ -1,10 +1,11 @@
 import {ShareOptions} from './sharer/models/ShareOptions';
 
+import {DataBaseOptions} from './data-storage/models/DataBaseOptions';
+import {DeleteOptions} from './data-storage/models/DeleteOptions';
 import {DropOptions} from './data-storage/models/DropOptions';
+import {RetrieveAllOptions} from './data-storage/models/RetrieveAllOptions';
 import {RetrieveOptions} from './data-storage/models/RetrieveOptions';
 import {StoreOptions} from './data-storage/models/StoreOptions';
-import {DeleteOptions} from './data-storage/models/DeleteOptions';
-import {DataBaseOptions} from './data-storage/models/DataBaseOptions';
 
 declare module "@capacitor/core" {
     interface PluginRegistry {
@@ -27,6 +28,8 @@ export interface DataStoragePlugin {
     remove(): Promise<{}>;
 
     retrieve(options: RetrieveOptions): Promise<{ value: any }>;
+
+    retrieveAll(options: RetrieveAllOptions): Promise<{ [key: string]: any }>;
 
     store(options: StoreOptions): Promise<{}>;
 }
