@@ -1,4 +1,17 @@
-##  (2020-05-19)
+##  (2020-10-28)
+
+## [0.3.0](https://github.com/krikoo-team/hybrid/compare/0.2.0...0.3.0) (2020-10-28)
+
+### Docs
+
+* docs(PluginsLibrary): Changed `Plugins link` index and added a better android configuration information.
+* docs(Capacitor): Removed unnecessary `Capacitor Plugin` link and added a `Sharer` link.
+* docs(Sharer): Fixed ShareOptions interface table.
+
+### Chores
+
+* chore(capacitor): Version incremented to `2.4.2`.
+
 
 ## [0.2.0](https://github.com/krikoo-team/hybrid/compare/0.1.2...0.2.0) (2020-05-19)
 
