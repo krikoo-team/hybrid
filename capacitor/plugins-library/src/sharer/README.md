@@ -79,7 +79,7 @@ It shares text and files by using sharing modal (multiple options) or email.
 ## ShareOptions
 
 | Property | Type | Description |
-|--|--|--|--|
+|--|--|--|
 | dialogTitle | `string` (optional) | Set a title for the share modal. Android only. |
 | email | `ShareOptionEmail` (optional) | Options to compose and share an email. |
 | text | `string` (optional) | Set some text to share. |
@@ -103,7 +103,7 @@ Information of the files to share by using native modal options or email, depend
 | Property | Type | Default | Description |
 |--|--|--|--|
 | directory | `FilesystemDirectory` (optional) | `FilesystemDirectory.Documents` | The `FilesystemDirectory` to store the file in. |
-| displayableName | `Array<string>` (optional) | `(Same as path)` | The file name with its extension to share. Default its origin name. |
+| displayableName | `Array<string>` (optional) | `(Same as path)` | Custom file name with its extension (important set an extension to display a thumbnail). Default its origin name. |
 | path | `string` | - | The path to the file with its name and extension included: `path/to/file.ext` |
 
 # Enumerations

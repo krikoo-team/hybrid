@@ -4,10 +4,10 @@
     "declaration": true,
     "experimentalDecorators": true,
     "lib": [
-      "dom",
-      "es2015"
+      "es2018",
+      "dom"
     ],
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUnusedLocals": true,
