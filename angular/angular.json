@@ -1,0 +1,51 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "utilities": {
+      "projectType": "library",
+      "root": "projects/utilities",
+      "sourceRoot": "projects/utilities/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/utilities/tsconfig.lib.json",
+            "project": "projects/utilities/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/utilities/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/utilities/src/test.ts",
+            "tsConfig": "projects/utilities/tsconfig.spec.json",
+            "karmaConfig": "projects/utilities/karma.conf.js",
+            "codeCoverageExclude": [
+              "**/*.mock.ts"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/utilities/tsconfig.lib.json",
+              "projects/utilities/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "utilities"
+}
