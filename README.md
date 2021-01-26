@@ -1,5 +1,5 @@
 # hybrid
-Tools to build an hybrid mobile, tablet and web application by using Ionic, Capacitor, Stencil and Angular.
+Tools to build a hybrid mobile, tablet and web application by using Ionic, Capacitor, Stencil and Angular.
 
 # Projects
   - [Capacitor Plugins](capacitor/plugins-library/README.md)

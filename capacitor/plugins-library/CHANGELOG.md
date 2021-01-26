@@ -1,16 +1,23 @@
-##  (2020-10-28)
+##  (2021-01-26)
+
+## [0.3.1](https://github.com/krikoo-team/hybrid/compare/0.3.0...0.3.1) (2021-01-26)
+
+### Bug Fixes
+
+* **datastorage(ios)**: Fixed wrong retrieved data when it is selected all key-values in iOS.
+
 
 ## [0.3.0](https://github.com/krikoo-team/hybrid/compare/0.2.0...0.3.0) (2020-10-28)
 
 ### Docs
 
-* docs(PluginsLibrary): Changed `Plugins link` index and added a better android configuration information.
-* docs(Capacitor): Removed unnecessary `Capacitor Plugin` link and added a `Sharer` link.
-* docs(Sharer): Fixed ShareOptions interface table.
+* **docs(PluginsLibrary)**: Changed `Plugins link` index and added a better android configuration information.
+* **docs(Capacitor)**: Removed unnecessary `Capacitor Plugin` link and added a `Sharer` link.
+* **docs(Sharer)**: Fixed ShareOptions interface table.
 
 ### Chores
 
-* chore(capacitor): Version incremented to `2.4.2`.
+* **chore(capacitor)**: Version incremented to `2.4.2`.
 
 
 ## [0.2.0](https://github.com/krikoo-team/hybrid/compare/0.1.2...0.2.0) (2020-05-19)
@@ -18,50 +25,50 @@
 
 ### Features
 
-* feat(android): Added retrieveAll method to DataStorage plugin.
-* feat(ios): Added retrieveAll method to DataStorage plugin.
-* feat(web): Added retrieveAll method to DataStorage plugin.
+* **feat(android)**: Added retrieveAll method to DataStorage plugin.
+* **feat(ios)**: Added retrieveAll method to DataStorage plugin.
+* **feat(web)**: Added retrieveAll method to DataStorage plugin.
 
 ### Docs
 
-* docs(DataStorage): Updated readme with retrieveAll new feature.
+* **docs(DataStorage)**: Updated readme with retrieveAll new feature.
 
 
 ## [0.1.2](https://github.com/krikoo-team/hybrid/compare/0.1.0...0.1.2) (2020-05-19)
 
 ### Bug Fixes
-* datastorage(android): Fixed retrieving error in android platform for data storage plugin.
-* datastorage(web): Fixed "non updatable value" error in Web Data Storage plugin by changing "add" by "put" method.
-* datastorage(web): Fixed web error retrieving massive data from data storage.
-* datastorage(web): Exported data storage error enum.
+* **datastorage(android)**: Fixed retrieving error in android platform for data storage plugin.
+* **datastorage(web)**: Fixed "non updatable value" error in Web Data Storage plugin by changing "add" by "put" method.
+* **datastorage(web)**: Fixed web error retrieving massive data from data storage.
+* **datastorage(web)**: Exported data storage error enum.
 
 
 ### Docs
 
-* docs(PluginsProxy): Updated links of the plugins for absolute ones to github.
+* **docs(PluginsProxy)**: Updated links of the plugins for absolute ones to github.
 
 
 ## 0.1.0 (2020-05-18)
 
 ### Features
 
-* feat(android): Added DataStorage plugin.
-* feat(ios): Added DataStorage plugin.
-* feat(web): Added DataStorage plugin.
+* **feat(android)**: Added DataStorage plugin.
+* **feat(ios)**: Added DataStorage plugin.
+* **feat(web)**: Added DataStorage plugin.
 
 ### Docs
 
-* docs(DataStorage): Created readme file.
-* docs(Sharer): Updated readme file.
+* **docs(DataStorage)**: Created readme file.
+* **docs(Sharer)**: Updated readme file.
 
 
 ## 0.0.4 (2020-04-20)
 
 ### Features
 
-* feat(android): Added Sharer plugin.
-* feat(ios): Added Sharer plugin.
+* **feat(android)**: Added Sharer plugin.
+* **feat(ios)**: Added Sharer plugin.
 
 ### Docs
 
-* docs(Sharer): Created readme file.
+* **docs(Sharer)**: Created readme file.
