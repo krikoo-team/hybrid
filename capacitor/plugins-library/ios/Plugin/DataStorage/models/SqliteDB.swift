@@ -162,7 +162,7 @@ class SqliteDB {
                 keyValues[key] = value
             } else {
                 if let dictionaryValue = DataStorageUtils.jsonParse(value) {
-                    keyValues[key] = dictionaryValue
+                    keyValues[key] = dictionaryValue["value"]
                 } else {
                     return [DataStorageUtils.DATA_STORAGE_ERROR_HASH : DataStorageError.JsonParse]
                 }
