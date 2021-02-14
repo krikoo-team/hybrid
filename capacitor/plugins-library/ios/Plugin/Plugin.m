@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <Capacitor/Capacitor.h>
 
-CAP_PLUGIN(Sharer, "Sharer",
-           CAP_PLUGIN_METHOD(share, CAPPluginReturnPromise);
+CAP_PLUGIN(FilePicker, "FilePicker",
+           CAP_PLUGIN_METHOD(present, CAPPluginReturnPromise);
 )
 
 CAP_PLUGIN(DataStorage, "DataStorage",
@@ -13,4 +13,8 @@ CAP_PLUGIN(DataStorage, "DataStorage",
            CAP_PLUGIN_METHOD(retrieve, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(retrieveAll, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(store, CAPPluginReturnPromise);
+)
+
+CAP_PLUGIN(Sharer, "Sharer",
+           CAP_PLUGIN_METHOD(share, CAPPluginReturnPromise);
 )
