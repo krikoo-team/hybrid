@@ -9,6 +9,10 @@ export * from './data-storage/models/RetrieveAllOptions';
 export * from './data-storage/models/StoreOptions';
 export * from './data-storage/data-storage';
 
+export * from './file-picker/file-picker';
+export * from './file-picker/models/FilePickerResult';
+export * from './file-picker/models/FilePickerError.enum';
+
 export * from './models/KrikooPluginError';
 
 export * from './sharer/models/ShareEmailApp.enum';
