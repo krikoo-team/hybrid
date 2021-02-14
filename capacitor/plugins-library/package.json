@@ -1,5 +1,6 @@
 {
   "name": "krikoo-capacitor",
+  "version": "0.4.1",
   "description": "Set of capacitor plugins.",
   "author": "Branko Fuenzalida Lorca",
   "license": "MIT",

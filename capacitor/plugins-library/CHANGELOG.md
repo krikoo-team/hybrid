@@ -1,4 +1,25 @@
-##  (2021-01-26)
+##  (2021-02-14)
+
+## [0.4.1](https://github.com/krikoo-team/hybrid/compare/0.3.1...0.4.1) (2021-02-14)
+
+### Features
+
+* **feat(android)**: Added FilePicker plugin.
+* **feat(ios)**: Added FilePicker plugin.
+
+### Docs
+
+* **docs(FilePicker)**: Created readme file.
+
+### Chores
+
+* **chore(capacitor)**: Version incremented to `2.4.6`.
+
+### Bug Fixes
+
+* **sharer(android)**: Fixed unused displayable name.
+* **datastorage(ios)**: Fixed wrong retrieved data when it is selected all key-values.
+
 
 ## [0.3.1](https://github.com/krikoo-team/hybrid/compare/0.3.0...0.3.1) (2021-01-26)
 
