@@ -25,6 +25,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 public class SharerUtils extends FileProvider {
@@ -137,6 +141,8 @@ public class SharerUtils extends FileProvider {
     JSArray files = call.getArray("files");
     ArrayList<Uri> fileUris = new ArrayList<>();
 
+    // TODO: Remove temp folder.
+
     if (files != null && files.length() != 0) {
       try {
         for (Object fileJsonObject : files.toList()) {
@@ -150,8 +156,34 @@ public class SharerUtils extends FileProvider {
               return null;
             }
 
-            // TODO: Check return value to present a proper error
-            File fileObject = getFileObject(path, directory, bridge);
+            File fileObject;
+            String displayableName = shareOptionFile.getString("displayableName", "");
+            if (displayableName.isEmpty()){
+              fileObject = getFileObject(path, directory, bridge);
+            } else {
+              String tempDirectory = "CACHE";
+              File fromFileObject = SharerUtils.getFileObject(path, directory, bridge);
+              File toFileObject = SharerUtils.getFileObject(displayableName, tempDirectory, bridge);
+
+              if (fromFileObject.equals(null)) {
+                call.reject(SharerError.CopyFileToTemp, "Error getting from file object.");
+                return null;
+              }
+
+              if (toFileObject.equals(null)) {
+                call.reject( SharerError.CopyFileToTemp, "Error getting to file object.");
+                return null;
+              }
+
+              try {
+                SharerUtils.copyRecursively(fromFileObject, toFileObject);
+                fileObject = SharerUtils.getFileObject(displayableName, tempDirectory, bridge);
+              } catch (IOException e) {
+                call.reject(SharerError.CopyFileToTemp, e);
+                return null;
+              }
+            }
+
             if (fileObject != null) {
               try {
                 Uri fileUri = SharerUtils.getUriForFile(context, context.getPackageName(), fileObject);
@@ -184,6 +216,30 @@ public class SharerUtils extends FileProvider {
       type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
     }
     return type;
+  }
+
+  private static void copyRecursively(File src, File dst) throws IOException {
+    if (src.isDirectory()) {
+      dst.mkdir();
+
+      for (String file : src.list()) {
+        SharerUtils.copyRecursively(new File(src, file), new File(dst, file));
+      }
+
+      return;
+    }
+
+    if (!dst.getParentFile().exists()) {
+      dst.getParentFile().mkdirs();
+    }
+
+    if (!dst.exists()) {
+      dst.createNewFile();
+    }
+
+    try (FileChannel source = new FileInputStream(src).getChannel(); FileChannel destination = new FileOutputStream(dst).getChannel()) {
+      destination.transferFrom(source, 0, source.size());
+    }
   }
 
   private static File getDirectory(String directory, Bridge bridge) {
