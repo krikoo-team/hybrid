@@ -21,7 +21,7 @@ It opens the file in a browser if it is able to, or it downloads the file. It us
 import {FilesystemDirectory} from '@capacitor/core';
 import {Opener, OpenOptions} from 'krikoo-capacitor';
 
-// Share simple text by presenting a native modal
+// Opens the file or downloads it.
 const openOptions: OpenOptions = {
   path: 'path/to/file.ext',
   directory: FilesystemDirectory.Data,
@@ -37,9 +37,9 @@ Opener.open(openOptions);
 ```typescript
 open(options: OpenOptions): Promise<{ status: any }> {
 ```
-It opens the file in a browser if it is able to, or it downloads the file.
+It enables the file open options.
 
-**options** [ShareOptions](#interfaces)  
+**options** [OpenOptions](#interfaces)  
 **return** `Promise<{ status: any }>`  
 **error** `Promise<{ message: string }>`  
 
