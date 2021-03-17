@@ -1,7 +1,8 @@
-import {Plugins, registerWebPlugin, WebPlugin} from '@capacitor/core';
+import {FileReadOptions, FileReadResult, Plugins, registerWebPlugin, WebPlugin} from '@capacitor/core';
 
 import {OpenerPlugin} from '../definitions';
 
+import {KrikooMimeType} from './models/KrikooMimeType';
 import {OpenOptions} from './models/OpenOptions';
 
 export class OpenerWeb extends WebPlugin implements OpenerPlugin {
@@ -13,9 +14,72 @@ export class OpenerWeb extends WebPlugin implements OpenerPlugin {
   }
 
   async open(options: OpenOptions): Promise<{ status: any }> {
-    console.log('Open options', options);
-    return {status: 'status here...'};
+    const fileReadOptions: FileReadOptions = {directory: options.directory, path: options.path};
+    const mimeType: KrikooMimeType = OpenerWeb.getFileMIMEType(options.path);
+    try {
+      const fileReadResult: FileReadResult = await Plugins.Filesystem.readFile(fileReadOptions);
+      const url: string = `data:${mimeType};base64,${fileReadResult.data}`;
+      const file: File = await OpenerWeb.convertToFile(url, options.displayableName, mimeType)
+      window.open(URL.createObjectURL(file));
+      return {status: {}};
+    } catch (error) {
+      throw {message: error};
+    }
   }
+
+  private static convertToFile(url: string, filename: string, mimeType: KrikooMimeType): Promise<File> {
+    return fetch(url)
+      .then((response: Response) => response.arrayBuffer())
+      .then((arrayBuffer: ArrayBuffer) => new File([arrayBuffer], filename, {type: mimeType}))
+  }
+
+  private static getFileMIMEType(path: string): KrikooMimeType {
+    const getExtensionRegExp: RegExp = new RegExp(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi);
+    const matches: Array<string> = (path || '').toLowerCase().match(getExtensionRegExp);
+    const extension: string = !matches || !matches.length ? '' : matches[0].replace('.', '');
+    switch (!extension ? '' : extension.toLowerCase()) {
+      case 'bmp':
+        return KrikooMimeType.BmpImage;
+      case 'docx':
+      case 'pages':
+        return KrikooMimeType.Document;
+      case 'gif':
+        return KrikooMimeType.GifImage;
+      case 'jpeg':
+      case 'jpg':
+        return KrikooMimeType.JpegImage;
+      case 'doc':
+      case 'dot':
+      case 'rtf':
+        return KrikooMimeType.MSDocument;
+      case 'ppt':
+      case 'pot':
+      case 'pps':
+      case 'ppa':
+        return KrikooMimeType.MSPresentation;
+      case 'xls':
+      case 'xlt':
+      case 'xla':
+        return KrikooMimeType.MSSheet;
+      case 'pdf':
+        return KrikooMimeType.Pdf;
+      case 'txt':
+        return KrikooMimeType.PlainText;
+      case 'png':
+        return KrikooMimeType.PngImage;
+      case 'pptx':
+      case 'keynote':
+        return KrikooMimeType.Presentation;
+      case 'xlsx':
+      case 'numbers':
+        return KrikooMimeType.Sheet;
+      case 'tif':
+        return KrikooMimeType.TifImage;
+      default :
+        return KrikooMimeType.Pdf;
+    }
+  }
+
 }
 
 class OpenerNative implements OpenerPlugin {
