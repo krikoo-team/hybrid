@@ -15,6 +15,9 @@ export * from './file-picker/models/FilePickerError.enum';
 
 export * from './models/KrikooPluginError';
 
+export * from './opener/models/OpenOptions';
+export * from './opener/opener';
+
 export * from './sharer/models/ShareEmailApp.enum';
 export * from './sharer/models/ShareError.enum';
 export * from './sharer/models/ShareOptionEmail';
