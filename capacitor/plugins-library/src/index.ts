@@ -14,6 +14,7 @@ export * from './file-picker/models/FilePickerResult';
 export * from './file-picker/models/FilePickerError.enum';
 
 export * from './models/KrikooPluginError';
+export * from './opener/models/KrikooMimeType';
 
 export * from './opener/models/OpenOptions';
 export * from './opener/opener';
