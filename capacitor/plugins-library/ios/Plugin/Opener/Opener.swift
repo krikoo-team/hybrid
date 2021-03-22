@@ -3,7 +3,7 @@ import Capacitor
 import MessageUI
 import MobileCoreServices
 
-@objc(Sharer)
+@objc(Opener)
 public class Opener: CAPPlugin, UINavigationControllerDelegate {
     
     private let DEFAULT_DIRECTORY = "DOCUMENTS"
