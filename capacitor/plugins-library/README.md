@@ -20,7 +20,6 @@ app -> java -> com.wke.a3doc -> MainActivity
 ```
 Import the following dependencies:
 ```java
-import com.bkon.capacitor.screenorientation.ScreenOrientation;
 import com.krikoo.capacitor.datastorage.DataStorage;
 import com.krikoo.capacitor.filepicker.FilePicker;
 import com.krikoo.capacitor.opener.Opener;
@@ -32,7 +31,6 @@ add(DataStorage.class);
 add(FilePicker.class);
 add(Opener.class);
 add(Sharer.class);
-add(ScreenOrientation.class);
 ```
 
 # Plugin Links
