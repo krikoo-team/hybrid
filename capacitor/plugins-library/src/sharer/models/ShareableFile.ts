@@ -1,5 +1,5 @@
 export interface ShareableFile {
-  data: string,
-  displayableName: string,
-  path: string
+  data: string;
+  displayableName: string;
+  path: string;
 }

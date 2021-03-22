@@ -2,7 +2,7 @@ import {FileReadOptions, FileReadResult, Plugins, registerWebPlugin, WebPlugin} 
 
 import {OpenerPlugin} from '../definitions';
 
-import {KrikooMimeType} from './models/KrikooMimeType';
+import {KrikooMimeType} from '../models/KrikooMimeType';
 import {OpenOptions} from './models/OpenOptions';
 
 export class OpenerWeb extends WebPlugin implements OpenerPlugin {
