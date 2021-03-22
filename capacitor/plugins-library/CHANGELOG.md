@@ -1,4 +1,38 @@
-##  (2021-02-14)
+##  (2021-03-22)
+
+## [0.6.0](https://github.com/krikoo-team/hybrid/compare/0.5.0...0.6.0) (2021-03-22)
+
+### Features
+
+* **feat(android)**: Added Opener plugin.
+* **feat(ios)**: Added Opener plugin.
+* **feat(Opener)**: Attribute `path` is now optional.
+* **feat(web)**: Added Sharer plugin.
+
+### Docs
+
+* **docs(DataStorage)**: Updated with plugin configuration and known issues.
+* **docs(FilePicker)**: Updated with plugin configuration.
+* **docs(Opener)**: Updated with extended description for web, iOS and Android, plugin configuration and examples.
+* **docs(plugins-library)**: Added Opener plugin configuration and readme link.
+* **docs(Sharer)**: Updated with plugin configuration and added ´SomeFileDoesNotExist´ error and share status messages.
+
+### Bug Fixes
+
+* **sharer(android)**: Fixed error when it is sharing by using the `url` attribute.
+* **sharer(ios)**: Fixed error when it is sharing by using the `url` attribute.
+
+
+## [0.5.0](https://github.com/krikoo-team/hybrid/compare/0.4.1...0.5.0) (2021-03-18)
+
+### Features
+
+* **feat(web)**: Added Opener plugin.
+
+### Docs
+
+* **docs(Opener)**: Created readme file.
+
 
 ## [0.4.1](https://github.com/krikoo-team/hybrid/compare/0.3.1...0.4.1) (2021-02-14)
 

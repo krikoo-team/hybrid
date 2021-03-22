@@ -6,8 +6,7 @@ It uses capacitor's Filesystem plugin.
 
 #### CONTENTS
 [Configuration](#configuration)  
-[References](#references)  
-[Known Issues](#known-issues)  
+[References](#references)    
 [Usage](#usage)  
 [API](#api)  
 [Interfaces](#interfaces)  
@@ -34,9 +33,6 @@ add(Opener.class);
 # References
 - Capacitor's plugins:
   - [Filesystem](https://capacitor.ionicframework.com/docs/apis/filesystem)
-
-# Known Issues
-- 
 
 # Usage
 

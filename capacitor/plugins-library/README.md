@@ -16,7 +16,7 @@ There is no needed.
 ### Android configuration
 Open main activity project file located at:
 ```
-app -> java -> com.wke.a3doc -> MainActivity
+app -> java -> com.domain.myapplication -> MainActivity
 ```
 Import the following dependencies:
 ```java
