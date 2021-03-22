@@ -20,7 +20,9 @@ export * from './opener/opener';
 
 export * from './sharer/models/ShareEmailApp.enum';
 export * from './sharer/models/ShareError.enum';
+export * from './sharer/models/ShareableFile';
 export * from './sharer/models/ShareOptionEmail';
 export * from './sharer/models/ShareOptionFile';
 export * from './sharer/models/ShareOptions';
+export * from './sharer/models/ShareStatus.enum';
 export * from './sharer/sharer';
