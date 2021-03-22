@@ -16,7 +16,7 @@ export interface OpenOptions {
   /**
    * The path to the file with its name and extension included: path/to/file.ext
    */
-  path: string;
+  path?: string;
   /**
    * Set a URL to share
    */

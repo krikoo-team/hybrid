@@ -2,12 +2,32 @@
 Share files and text by using the native share modal or a email app. It is based in Capacitor's `Share` plugin and it is compatible with capacitor's `Filesystem` plugin.
 
 #### CONTENTS
+[Configuration](#configuration)  
 [References](#references)  
 [Known Issues](#known-issues) 
 [Usage](#usage)  
 [API](#api)  
 [Interfaces](#interfaces)  
 [Enumerations](#enumerations)  
+
+# Configuration
+
+### iOS
+There is no needed.
+
+### Android
+Open main activity project file located at:
+```
+app -> java -> com.domain.myapplication -> MainActivity
+```
+Import the following dependencies:
+```java
+import com.krikoo.capacitor.sharer.Sharer;
+```
+Add into `this.init` method the following classes:
+```
+add(Sharer.class);
+```
 
 # References
 - Capacitor's plugins:
