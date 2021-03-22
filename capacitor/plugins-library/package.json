@@ -1,9 +1,21 @@
 {
   "name": "krikoo-capacitor",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Set of capacitor plugins.",
-  "author": "Branko Fuenzalida Lorca",
+  "author": "Branko Fuenzalida <branko.fuenzalida@gmail.com> (https://github.com/brankoenero)",
+  "contributors": [
+    "Branko Fuenzalida <branko.fuenzalida@gmail.com> (https://github.com/brankoenero)",
+    "Christian Hernandez <christianhmena@gmail.com> (https://github.com/christianhmena)"
+  ],
   "license": "MIT",
+  "homepage": "https://github.com/krikoo-team/hybrid.git#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krikoo-team/hybrid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/krikoo-team/hybrid/blob/master/capacitor/plugins-library/CHANGELOG.md"
+  },
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "scripts": {
@@ -36,12 +48,14 @@
   ],
   "keywords": [
     "capacitor",
-    "plugin",
-    "native",
+    "email",
+    "file",
     "ionic",
+    "native",
+    "open",
+    "picker",
+    "plugin",
     "share",
-    "eamil",
-    "files",
     "storage"
   ],
   "capacitor": {
@@ -51,12 +65,5 @@
     "android": {
       "src": "android"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/krikoo-team/hybrid.git"
-  },
-  "bugs": {
-    "url": "no/issues"
   }
 }

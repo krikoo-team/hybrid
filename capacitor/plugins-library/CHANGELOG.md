@@ -1,5 +1,17 @@
 ##  (2021-03-22)
 
+## [0.6.1](https://github.com/krikoo-team/hybrid/compare/0.6.0...0.6.1) (2021-03-22)
+
+### Docs
+
+* **docs(plugins-library)**: Added contributors, home page, bugs page and sorted keywords alphabetically.
+
+### Bug Fixes
+
+* **sharer(ios)**: Fixed wrong enumeration access.
+* **opener(ios)**: Fixed objc declaration.
+
+
 ## [0.6.0](https://github.com/krikoo-team/hybrid/compare/0.5.0...0.6.0) (2021-03-22)
 
 ### Features
