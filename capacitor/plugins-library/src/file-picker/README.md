@@ -2,11 +2,31 @@
 It presents a native file picker for browse option. Neither the camera nor the photo library are supported.  
 
 #### CONTENTS
+[Configuration](#configuration)  
 [Known Issues](#known-issues) 
 [Usage](#usage)  
 [API](#api)  
 [Interfaces](#interfaces)  
 [Enumerations](#enumerations)  
+
+# Configuration
+
+### iOS
+There is no needed.
+
+### Android
+Open main activity project file located at:
+```
+app -> java -> com.domain.myapplication -> MainActivity
+```
+Import the following dependencies:
+```java
+import com.krikoo.capacitor.filepicker.FilePicker;
+```
+Add into `this.init` method the following classes:
+```
+add(FilePicker.class);
+```
 
 # Known Issues
 - **all**: It can retrieve just one file per present.

@@ -2,10 +2,37 @@
 Key-value data storage. It is developed by using sqlite for native platforms and IndexedDB for web, so it is possible handle table and database too.
 
 #### CONTENTS
+[Configuration](#configuration)
+[Known Issues](#known-issues)    
 [Usage](#usage)  
 [API](#api)  
 [Interfaces](#interfaces)  
 [Enumerations](#enumerations)  
+
+# Configuration
+
+### iOS
+There is no needed.
+
+### Android
+Open main activity project file located at:
+```
+app -> java -> com.domain.myapplication -> MainActivity
+```
+Import the following dependencies:
+```java
+import com.krikoo.capacitor.datastorage.DataStorage;
+```
+Add into `this.init` method the following classes:
+```
+add(DataStorage.class);
+```
+
+# References
+- 
+
+# Known Issues
+- Editing or creating data simultaneously at the same time can cause unexpected errors. It is better to edit or create serially. 
 
 # Usage
 

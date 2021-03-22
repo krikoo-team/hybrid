@@ -26,6 +26,10 @@
 		D667715724535ECC00FE667A /* SqliteDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667715324535ECC00FE667A /* SqliteDB.swift */; };
 		D667715824535ECC00FE667A /* DataStorageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667715424535ECC00FE667A /* DataStorageUtils.swift */; };
 		D667715E2454146400FE667A /* DataStorageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667715D2454146400FE667A /* DataStorageError.swift */; };
+		D6C91CA126039EC7007D448E /* Opener.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91CA026039EC7007D448E /* Opener.swift */; };
+		D6C91CA526039ED6007D448E /* OpenerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91CA426039ED6007D448E /* OpenerUtils.swift */; };
+		D6C91CAA26039F12007D448E /* OpenerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91CA926039F12007D448E /* OpenerError.swift */; };
+		D6C91CAE2603A11A007D448E /* OpenResultStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91CAD2603A11A007D448E /* OpenResultStatus.swift */; };
 		D6D6EA4425D6716000F56C1A /* FilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D6EA4325D6716000F56C1A /* FilePicker.swift */; };
 		D6D6EA4825D6735C00F56C1A /* FilePickerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D6EA4725D6735C00F56C1A /* FilePickerUtils.swift */; };
 		D6D6EA4E25D6738200F56C1A /* FilePickerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D6EA4D25D6738200F56C1A /* FilePickerError.swift */; };
@@ -66,6 +70,10 @@
 		D667715324535ECC00FE667A /* SqliteDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqliteDB.swift; sourceTree = "<group>"; };
 		D667715424535ECC00FE667A /* DataStorageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorageUtils.swift; sourceTree = "<group>"; };
 		D667715D2454146400FE667A /* DataStorageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageError.swift; sourceTree = "<group>"; };
+		D6C91CA026039EC7007D448E /* Opener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opener.swift; sourceTree = "<group>"; };
+		D6C91CA426039ED6007D448E /* OpenerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenerUtils.swift; sourceTree = "<group>"; };
+		D6C91CA926039F12007D448E /* OpenerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenerError.swift; sourceTree = "<group>"; };
+		D6C91CAD2603A11A007D448E /* OpenResultStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenResultStatus.swift; sourceTree = "<group>"; };
 		D6D6EA4325D6716000F56C1A /* FilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePicker.swift; sourceTree = "<group>"; };
 		D6D6EA4725D6735C00F56C1A /* FilePickerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerUtils.swift; sourceTree = "<group>"; };
 		D6D6EA4D25D6738200F56C1A /* FilePickerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerError.swift; sourceTree = "<group>"; };
@@ -118,6 +126,7 @@
 		50ADFF8A201F53D600D50D53 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
+				D6C91C9F26039EAA007D448E /* Opener */,
 				D6D6EA4225D6713B00F56C1A /* FilePicker */,
 				D667714F24535ECC00FE667A /* DataStorage */,
 				D635E2AF244B9B9E00F26CE9 /* Sharer */,
@@ -196,6 +205,25 @@
 				D667715224535ECC00FE667A /* StorageKeyValue.swift */,
 				D667715324535ECC00FE667A /* SqliteDB.swift */,
 				D667715D2454146400FE667A /* DataStorageError.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		D6C91C9F26039EAA007D448E /* Opener */ = {
+			isa = PBXGroup;
+			children = (
+				D6C91CA826039EDD007D448E /* models */,
+				D6C91CA026039EC7007D448E /* Opener.swift */,
+				D6C91CA426039ED6007D448E /* OpenerUtils.swift */,
+			);
+			path = Opener;
+			sourceTree = "<group>";
+		};
+		D6C91CA826039EDD007D448E /* models */ = {
+			isa = PBXGroup;
+			children = (
+				D6C91CA926039F12007D448E /* OpenerError.swift */,
+				D6C91CAD2603A11A007D448E /* OpenResultStatus.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -395,6 +423,7 @@
 				D6292F60244C55AF009DC067 /* ShareResultStatus.swift in Sources */,
 				D6D6EA4825D6735C00F56C1A /* FilePickerUtils.swift in Sources */,
 				D667715824535ECC00FE667A /* DataStorageUtils.swift in Sources */,
+				D6C91CAA26039F12007D448E /* OpenerError.swift in Sources */,
 				D635E2B1244B9BD100F26CE9 /* Sharer.swift in Sources */,
 				50E1A94820377CB70090CE1A /* Plugin.swift in Sources */,
 				D635E2BC244BA64300F26CE9 /* ShareEmailApp.swift in Sources */,
@@ -402,11 +431,14 @@
 				D635E2B7244B9C1200F26CE9 /* SharerUtils.swift in Sources */,
 				D6D6EA4E25D6738200F56C1A /* FilePickerError.swift in Sources */,
 				D6292F62244C55CD009DC067 /* ShareEmailOptions.swift in Sources */,
+				D6C91CA526039ED6007D448E /* OpenerUtils.swift in Sources */,
 				D667715E2454146400FE667A /* DataStorageError.swift in Sources */,
 				D667715524535ECC00FE667A /* DataStorage.swift in Sources */,
+				D6C91CA126039EC7007D448E /* Opener.swift in Sources */,
 				D667715724535ECC00FE667A /* SqliteDB.swift in Sources */,
 				50ADFFA82020EE4F00D50D53 /* Plugin.m in Sources */,
 				D635E2B5244B9C0600F26CE9 /* SharerError.swift in Sources */,
+				D6C91CAE2603A11A007D448E /* OpenResultStatus.swift in Sources */,
 				D6D6EA4425D6716000F56C1A /* FilePicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
