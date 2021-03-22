@@ -95,7 +95,7 @@ public class Sharer: CAPPlugin, MFMailComposeViewControllerDelegate, UINavigatio
         case .failed:
             result = SharerError.DoAction
         @unknown default:
-            result = ShareResultStatus.Undefinded
+            result = ShareResultStatus.Undefined
         }
         
         if let mailError = error {
