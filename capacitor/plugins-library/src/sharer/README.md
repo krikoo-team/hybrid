@@ -156,6 +156,15 @@ Returned error messages
 | MimeType | Error getting the mime type of some file. |
 | OpenExternalApp | Error opening a specified email app. |
 | SharingActivityItems | Error trying to share some `activity item`. |
+| SomeFileDoesNotExist | Error reading the file. |
 | UnsupportedUrl | The `url` param does not have a valid url. |
 | UrlParamsConversion | Error converting `email` params into a url. |
 | UrlToData | Error converting `Data` object into url. |
+
+
+##ShareStatus
+Returned status messages
+| Name | Description |
+|--|--|
+| Cancelled | Files cancelled to share. |
+| Shared | Files shared. |

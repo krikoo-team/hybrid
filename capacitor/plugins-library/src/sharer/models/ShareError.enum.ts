@@ -1,4 +1,4 @@
-export enum SharerError {
+export enum ShareError {
     AppNotFound = "APP_NOT_FOUND_ERROR",
     ClearTempDir = "CLEAR_TEMP_DIR_ERROR",
     CopyFileToTemp = "COPY_TO_TEMP_ERROR",
@@ -12,6 +12,7 @@ export enum SharerError {
     MailComposer = "MAIL_COMPOSER_ERROR",
     MimeType = "MIME_TYPE_ERROR",
     SharingActivityItems = "SHARING_ACTIVITY_ITEMS_ERROR",
+    SomeFileDoesNotExist = "SOME_FILE_DOES_NOT_EXIST_ERROR",
     UnsupportedUrl = "UNSUPPORTED_URL_ERROR",
     UrlParamsConversion = "URL_PARAMS_CONVERSION_ERROR",
     UrlToData = "URL_TO_DATA_ERROR"
