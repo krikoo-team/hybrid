@@ -1,4 +1,18 @@
-##  (2021-03-22)
+##  (2021-03-26)
+
+## [0.6.4](https://github.com/krikoo-team/hybrid/compare/0.6.3...0.6.4) (2021-03-26)
+
+### Bug Fixes
+
+* **opener(web)**: Added displayable name to file when it is not openable.
+
+
+## [0.6.3](https://github.com/krikoo-team/hybrid/compare/0.6.1...0.6.3) (2021-03-23)
+
+### Bug Fixes
+
+* **opener(ios)**: Added Opener to Capacitor Plugins and fixed empty `path` condition.
+
 
 ## [0.6.1](https://github.com/krikoo-team/hybrid/compare/0.6.0...0.6.1) (2021-03-22)
 
