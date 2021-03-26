@@ -6,6 +6,17 @@ import {KrikooMimeType} from '../models/KrikooMimeType';
 import {OpenOptions} from './models/OpenOptions';
 
 export class OpenerWeb extends WebPlugin implements OpenerPlugin {
+
+  private readonly OPENABLE_MIME_TYPES: Array<string> = [
+    KrikooMimeType.BmpImage,
+    KrikooMimeType.GifImage,
+    KrikooMimeType.JpgImage,
+    KrikooMimeType.JpegImage,
+    KrikooMimeType.PngImage,
+    KrikooMimeType.TifImage,
+    KrikooMimeType.Pdf
+  ];
+
   constructor() {
     super({
       name: 'Opener',
@@ -19,9 +30,16 @@ export class OpenerWeb extends WebPlugin implements OpenerPlugin {
     try {
       const fileReadResult: FileReadResult = await Plugins.Filesystem.readFile(fileReadOptions);
       const url: string = `data:${mimeType};base64,${fileReadResult.data}`;
-      const file: File = await OpenerWeb.convertToFile(url, options.displayableName, mimeType)
-      window.open(URL.createObjectURL(file));
-      return {status: {}};
+      if (this.OPENABLE_MIME_TYPES.includes(mimeType)) {
+        const file: File = await OpenerWeb.convertToFile(url, options.displayableName, mimeType)
+        window.open(URL.createObjectURL(file));
+        return {status: {}};
+      } else {
+        const downloadAnchor: HTMLAnchorElement = document.createElement('a');
+        downloadAnchor.download = `${options.displayableName}`;
+        downloadAnchor.href = url;
+        downloadAnchor.click();
+      }
     } catch (error) {
       throw {message: error};
     }

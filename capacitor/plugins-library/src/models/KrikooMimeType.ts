@@ -2,6 +2,7 @@ export enum KrikooMimeType {
   BmpImage = 'image/bmp',
   Document = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   GifImage = 'image/gif',
+  JpgImage = 'image/jpg',
   JpegImage = 'image/jpeg',
   MSDocument = 'application/msword',
   MSPresentation = 'application/vnd.ms-powerpoint',
