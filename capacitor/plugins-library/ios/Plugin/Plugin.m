@@ -15,6 +15,10 @@ CAP_PLUGIN(DataStorage, "DataStorage",
            CAP_PLUGIN_METHOD(store, CAPPluginReturnPromise);
 )
 
+CAP_PLUGIN(Opener, "Opener",
+           CAP_PLUGIN_METHOD(open, CAPPluginReturnPromise);
+)
+
 CAP_PLUGIN(Sharer, "Sharer",
            CAP_PLUGIN_METHOD(share, CAPPluginReturnPromise);
 )

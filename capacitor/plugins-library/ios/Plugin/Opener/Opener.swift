@@ -19,10 +19,10 @@ public class Opener: CAPPlugin, UINavigationControllerDelegate {
         
         var fileUri: URL?;
         
-        if path.isEmpty == false && url.isEmpty == false {
+        if path.isEmpty == true && url.isEmpty == true {
             call.error(OpenerError.EmptyFilePathAndUrl)
             return
-        } else if path.isEmpty == true {
+        } else if path.isEmpty == false {
             let directory = call.getString("directory", DEFAULT_DIRECTORY)!
             fileUri = OpenerUtils.getUriByPathAndDirectory(call, path, directory, displayableName)
         } else {
